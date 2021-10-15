@@ -1,6 +1,29 @@
 <?php
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Configurações da aplicação
+    |--------------------------------------------------------------------------
+    */
+
+    'attendance_status' => [
+        1 => ['en_US' => 'Scheduled', 'pt_BT' => 'Agendado'],
+        2 => ['en_US' => 'In progress', 'pt_BT' => 'Em andamento'],
+        3 => ['en_US' => 'Cancelled', 'pt_BT' => 'Cancelado'],
+        4 => ['en_US' => 'Finished', 'pt_BT' => 'Finalizado'],
+    ],
+
+    'attendance_type' => [
+        1 => ['en_US' => 'Online', 'pt_BT' => 'Online'],
+        2 => ['en_US' => 'Office', 'pt_BT' => 'Consultório'],
+        3 => ['en_US' => 'At home', 'pt_BT' => 'Em Casa'],
+    ],
+
+    'attendance_file_type' => [
+        1 => ['en_US' => 'Exams', 'pt_BT' => 'Exames'],
+        2 => ['en_US' => 'Sick Note', 'pt_BT' => 'Atestados'],
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -174,7 +197,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        Intervention\Image\ImageServiceProvider::class
     ],
 
     /*
@@ -228,7 +251,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Image' => Intervention\Image\Facades\Image::class
     ],
 
 ];
