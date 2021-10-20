@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Attendance;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
@@ -29,7 +30,11 @@ class AttendanceFactory extends Factory
             $date->addDays(rand(0, 5));
         }
         $timeMinutes = ["30", "00"];
+        $user = User::inRandomOrder()->where('role', 1)->first();
+        $doctor = User::inRandomOrder()->where('role', 2)->first();
         return [
+            'user_id' => $user->id,
+            'doctor_id' => $doctor->id,
             'status' => rand(1, 4),
             'appointment' => $date,
             'time' => rand(1, 2).':'.$timeMinutes[rand(0, 1)],

@@ -15,6 +15,8 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('doctor_id')->foreign('doctor_id')->references('id')->on('users');
             $table->string('status', 2)->default(1);
             $table->timestamp('appointment');
             $table->time('time');

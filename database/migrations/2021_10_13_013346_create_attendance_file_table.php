@@ -14,6 +14,7 @@ class CreateAttendanceFileTable extends Migration
     public function up()
     {
         Schema::create('attendance_file', function (Blueprint $table) {
+            $table->id();
             $table->bigInteger('attendance_id');
             $table->bigInteger('file_id');
             $table->string('category', 2);

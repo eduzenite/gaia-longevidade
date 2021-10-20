@@ -3,12 +3,9 @@
 namespace Tests\Feature\Attendances;
 
 use App\Models\Attendance;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
-use Faker\Factory as Faker;
-use Illuminate\Support\Str;
 
 class AttendancePositiveTest extends TestCase
 {
@@ -35,7 +32,11 @@ class AttendancePositiveTest extends TestCase
             $date->addDays(rand(0, 5));
         }
         $timeMinutes = ["30", "00"];
+        $user = User::inRandomOrder()->where('role', 1)->first();
+        $doctor = User::inRandomOrder()->where('role', 2)->first();
         $data = [
+            'user_id' => $user->id,
+            'doctor_id' => $doctor->id,
             'appointment' => $date->format('Y-m-d H:i'),
             'time' => rand(1, 2).':'.$timeMinutes[rand(0, 1)],
             'type' => rand(0, 2),
@@ -77,16 +78,9 @@ class AttendancePositiveTest extends TestCase
     public function show_attendance()
     {
         $this->withoutExceptionHandling();
-        $Attendance = Attendance::inRandomOrder()->with('attendance_details')->first();
-        $data = [
-            'appointment' => $Attendance->appointment->format('Y-m-d H:i'),
-            'time' => $Attendance->time,
-            'type' => $Attendance->type,
-            'amount' => $Attendance->amount
-        ];
+        $Attendance = Attendance::with('attendance_details')->inRandomOrder()->first();
         $this->get(route('attendances.show', ['id' => $Attendance->id]))
-            ->assertStatus(200)
-            ->assertJson($data);
+            ->assertStatus(200);
     }
 
     /**
@@ -97,6 +91,7 @@ class AttendancePositiveTest extends TestCase
         $this->withoutExceptionHandling();
         $Attendance = Attendance::inRandomOrder()->first();
         $this->delete(route('attendances.destroy', ['id' => $Attendance->id]))
-            ->assertStatus(200);
+            ->assertStatus(200)
+            ->assertJson(['deleted' => true]);
     }
 }

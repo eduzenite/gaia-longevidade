@@ -15,4 +15,14 @@ class AttendanceDetails extends Model
      * @var string[]
      */
     protected $fillable = ['title', 'contents'];
+
+    /**
+     * Get all attendance details
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function attendance()
+    {
+        return $this->belongsToMany(Attendance::class);
+    }
 }

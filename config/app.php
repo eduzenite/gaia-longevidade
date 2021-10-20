@@ -7,22 +7,29 @@ return [
     |--------------------------------------------------------------------------
     */
 
+    'user_role' => [
+        1 => ['en_US' => 'Patient', 'pt_BR' => 'Paciente'],
+        2 => ['en_US' => 'Doctor', 'pt_BR' => 'Médico'],
+        3 => ['en_US' => 'Employee', 'pt_BR' => 'Funcionário'],
+        4 => ['en_US' => 'Administrator ', 'pt_BR' => 'Administrador'],
+    ],
+
     'attendance_status' => [
-        1 => ['en_US' => 'Scheduled', 'pt_BT' => 'Agendado'],
-        2 => ['en_US' => 'In progress', 'pt_BT' => 'Em andamento'],
-        3 => ['en_US' => 'Cancelled', 'pt_BT' => 'Cancelado'],
-        4 => ['en_US' => 'Finished', 'pt_BT' => 'Finalizado'],
+        1 => ['en_US' => 'Scheduled', 'pt_BR' => 'Agendado'],
+        2 => ['en_US' => 'In progress', 'pt_BR' => 'Em andamento'],
+        3 => ['en_US' => 'Cancelled', 'pt_BR' => 'Cancelado'],
+        4 => ['en_US' => 'Finished', 'pt_BR' => 'Finalizado'],
     ],
 
     'attendance_type' => [
-        1 => ['en_US' => 'Online', 'pt_BT' => 'Online'],
-        2 => ['en_US' => 'Office', 'pt_BT' => 'Consultório'],
-        3 => ['en_US' => 'At home', 'pt_BT' => 'Em Casa'],
+        1 => ['en_US' => 'Online', 'pt_BR' => 'Online'],
+        2 => ['en_US' => 'Office', 'pt_BR' => 'Consultório'],
+        3 => ['en_US' => 'At home', 'pt_BR' => 'Em Casa'],
     ],
 
     'attendance_file_type' => [
-        1 => ['en_US' => 'Exams', 'pt_BT' => 'Exames'],
-        2 => ['en_US' => 'Sick Note', 'pt_BT' => 'Atestados'],
+        1 => ['en_US' => 'Exams', 'pt_BR' => 'Exames'],
+        2 => ['en_US' => 'Sick Note', 'pt_BR' => 'Atestados'],
     ],
 
     /*

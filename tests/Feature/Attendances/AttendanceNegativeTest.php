@@ -3,8 +3,6 @@
 namespace Tests\Feature\Attendances;
 
 use App\Models\Attendance;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
@@ -22,7 +20,7 @@ class AttendanceNegativeTest extends TestCase
             'type' => 5,
             'amount' => '200,00'
         ];
-        $this->post(route('attendances.store'), $data)
+        $this->post(route('diary.store'), $data)
             ->assertStatus(400)
             ->assertJson(['error' => 'Bad Request']);
     }
@@ -40,7 +38,7 @@ class AttendanceNegativeTest extends TestCase
             'type' => 5,
             'amount' => '200,00'
         ];
-        $this->put(route('attendances.update', ['id' => $Attendance->id]), $data)
+        $this->put(route('diary.update', ['id' => $Attendance->id]), $data)
             ->assertStatus(400)
             ->assertJson(['error' => 'Bad Request']);
     }
@@ -64,7 +62,7 @@ class AttendanceNegativeTest extends TestCase
             'type' => rand(0, 2),
             'amount' => rand(150, 350).'.'.rand(10, 99)
         ];
-        $this->put(route('attendances.update', ['id' => 0]), $data)
+        $this->put(route('diary.update', ['id' => 0]), $data)
             ->assertStatus(404)
             ->assertJson(['error' => 'Not Found']);
     }
@@ -75,7 +73,7 @@ class AttendanceNegativeTest extends TestCase
     public function show_non_existent_attendance()
     {
         $this->withoutExceptionHandling();
-        $this->get(route('attendances.show', ['id' => 0]))
+        $this->get(route('diary.show', ['id' => 0]))
             ->assertStatus(404)
             ->assertJson(['error' => 'Not Found']);
     }
@@ -86,7 +84,7 @@ class AttendanceNegativeTest extends TestCase
     public function delete_non_existent_attendance()
     {
         $this->withoutExceptionHandling();
-        $this->delete(route('attendances.destroy', ['id' =>0]))
+        $this->delete(route('diary.destroy', ['id' =>0]))
             ->assertStatus(404)
             ->assertJson(['error' => 'Not Found']);
     }

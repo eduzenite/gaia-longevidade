@@ -17,6 +17,15 @@ class File extends Model
     protected $fillable = ['title', 'type', 'info'];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'info' => 'object',
+    ];
+
+    /**
      * Get all attendance details
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -24,5 +33,15 @@ class File extends Model
     public function attendance()
     {
         return $this->belongsToMany(Attendance::class);
+    }
+
+    /**
+     * Get all attendance details
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function diary()
+    {
+        return $this->belongsToMany(Diary::class);
     }
 }

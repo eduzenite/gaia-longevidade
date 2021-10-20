@@ -14,7 +14,7 @@ class Attendance extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['status', 'appointment', 'time', 'type', 'amount'];
+    protected $fillable = ['user_id', 'doctor_id', 'status', 'appointment', 'time', 'type', 'amount'];
 
     /**
      * The attributes that should be cast.

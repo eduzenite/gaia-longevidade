@@ -5,8 +5,6 @@ namespace Tests\Feature\Attendances;
 use App\Models\Attendance;
 use App\Models\AttendanceDetails;
 use Faker\Factory as Faker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AttendanceDetailsPositiveTest extends TestCase
@@ -54,6 +52,7 @@ class AttendanceDetailsPositiveTest extends TestCase
         $this->withoutExceptionHandling();
         $AttendanceDetails = AttendanceDetails::inRandomOrder()->first();
         $this->delete(route('attendances-details.destroy', ['id' => $AttendanceDetails->id]))
-            ->assertStatus(200);
+            ->assertStatus(200)
+            ->assertJson(['deleted' => true]);
     }
 }

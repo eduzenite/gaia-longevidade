@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\AttendanceDetailsController;
-use App\Http\Controllers\AttendanceFileController;
+use App\Http\Controllers\Attendance\AttendanceController;
+use App\Http\Controllers\Attendance\AttendanceDetailsController;
+use App\Http\Controllers\Attendance\AttendanceFileController;
+use App\Http\Controllers\Diary\DiaryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,4 +46,14 @@ Route::group([
     Route::post('/', [AttendanceFileController::class, 'store'])->name('attendances-files.store');
     Route::put('{id}', [AttendanceFileController::class, 'update'])->name('attendances-files.update');
     Route::delete('{id}', [AttendanceFileController::class, 'destroy'])->name('attendances-files.destroy');
+});
+
+Route::group([
+    "prefix" => "diaries"
+], function () {
+    Route::get('/', [DiaryController::class, 'index'])->name('diaries.index');
+    Route::post('/', [DiaryController::class, 'store'])->name('diaries.store');
+    Route::get('{id}', [DiaryController::class, 'show'])->name('diaries.show');
+    Route::put('{id}', [DiaryController::class, 'update'])->name('diaries.update');
+    Route::delete('{id}', [DiaryController::class, 'destroy'])->name('diaries.destroy');
 });
