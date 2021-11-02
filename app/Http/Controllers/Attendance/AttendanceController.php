@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Attendance\GoogleCalendarController;
 
 class AttendanceController extends Controller
 {
@@ -41,11 +43,12 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
-            'doctor_id' => 'required',
+            'user_id' => 'required|numeric',
+            'doctor_id' => 'required|numeric',
             'appointment' => 'required|date_format:Y-m-d H:i',
             'time' => 'required',
             'type' => 'required|numeric|max:2',
+            'speciality_id' => 'required|numeric',
             'amount' => 'required|numeric',
         ]);
         if ($validator->fails()) {
@@ -57,7 +60,10 @@ class AttendanceController extends Controller
         $Attendance->appointment = $request->appointment;
         $Attendance->time = $request->time;
         $Attendance->type = $request->type;
+        $Attendance->speciality_id = $request->speciality_id;
         $Attendance->amount = $request->amount;
+//        $event = GoogleCalendarController::store($request);
+//        $Attendance->event_id = $event;
         $Attendance->save();
         return response()->json($Attendance);
     }

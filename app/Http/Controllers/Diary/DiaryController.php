@@ -25,7 +25,6 @@ class DiaryController extends Controller
                 $query->whereBetween('appointment', array($request->appointment->start_date, $request->appointment->and_date.' 23:59'));
             }
         })->paginate();
-
         return response()->json($Diary);
     }
 
@@ -61,7 +60,7 @@ class DiaryController extends Controller
      */
     public function show($id)
     {
-        $Diary = Diary::with('file')->with('specialist')->find($id);
+        $Diary = Diary::with('file')->with('speciality')->find($id);
         if($Diary){
             return response()->json($Diary);
         }else{

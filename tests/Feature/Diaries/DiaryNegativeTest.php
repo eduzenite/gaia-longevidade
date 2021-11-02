@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Diaries;
 
-use App\Models\Attendance;
 use App\Models\Diary;
 use Faker\Factory as Faker;
 use Illuminate\Support\Carbon;
@@ -32,7 +31,7 @@ class DiaryNegativeTest extends TestCase
     public function update_diary_with_wrong_fields()
     {
         $this->withoutExceptionHandling();
-        $Diary = Diary::inRandomOrder()->first();
+        $Diary = Diary::factory()->create();
         $data = [
             'appointment' => 'Y-m-d H:i',
             'description' => '',

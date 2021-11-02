@@ -41,8 +41,8 @@ class Diary extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function specialist()
+    public function speciality()
     {
-        return $this->belongsToMany(Specialist::class);
+        return $this->belongsToMany(Speciality::class);
     }
 }

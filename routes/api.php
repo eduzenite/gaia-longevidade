@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Attendance\AnamnesisController;
 use App\Http\Controllers\Attendance\AttendanceController;
 use App\Http\Controllers\Attendance\AttendanceDetailsController;
 use App\Http\Controllers\Attendance\AttendanceFileController;
+use App\Http\Controllers\Attendance\GoogleCalendarController;
 use App\Http\Controllers\Diary\DiaryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -56,4 +58,26 @@ Route::group([
     Route::get('{id}', [DiaryController::class, 'show'])->name('diaries.show');
     Route::put('{id}', [DiaryController::class, 'update'])->name('diaries.update');
     Route::delete('{id}', [DiaryController::class, 'destroy'])->name('diaries.destroy');
+});
+
+Route::group([
+    "prefix" => "anamnesis"
+], function () {
+    Route::get('/', [AnamnesisController::class, 'index'])->name('anamnesis.index');
+    Route::post('/', [AnamnesisController::class, 'store'])->name('anamnesis.store');
+    Route::get('{id}', [AnamnesisController::class, 'show'])->name('anamnesis.show');
+    Route::put('{id}', [AnamnesisController::class, 'update'])->name('anamnesis.update');
+    Route::delete('{id}', [AnamnesisController::class, 'destroy'])->name('anamnesis.destroy');
+});
+
+
+
+Route::group([
+    "prefix" => "calendar"
+], function () {
+    Route::get('/', [GoogleCalendarController::class, 'index'])->name('calendar.index');
+    Route::post('/', [GoogleCalendarController::class, 'store'])->name('calendar.store');
+    Route::get('{id}', [GoogleCalendarController::class, 'show'])->name('calendar.show');
+    Route::put('{id}', [GoogleCalendarController::class, 'update'])->name('calendar.update');
+    Route::delete('{id}', [GoogleCalendarController::class, 'destroy'])->name('calendar.destroy');
 });

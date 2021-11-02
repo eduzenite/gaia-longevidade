@@ -21,7 +21,9 @@ class CreateAttendancesTable extends Migration
             $table->timestamp('appointment');
             $table->time('time');
             $table->string('type', 2)->default(1);
+            $table->unsignedBigInteger('speciality_id')->foreign('speciality_id')->references('id')->on('speciality');
             $table->double('amount', 8, 2);
+            $table->string('event_id')->nullable();
             $table->timestamps();
         });
     }

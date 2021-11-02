@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'timezone',
     ];
 
     /**
@@ -48,8 +49,13 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function specialists()
+    public function specialities()
     {
-        return $this->belongsToMany(Specialist::class);
+        return $this->belongsToMany(Speciality::class);
+    }
+
+    public function setTimezoneAttribute($value)
+    {
+        $this->attributes['timezone'] = $value ? $value : config('app.timezone');
     }
 }

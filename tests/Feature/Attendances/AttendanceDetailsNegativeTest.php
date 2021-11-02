@@ -3,6 +3,7 @@
 namespace Tests\Feature\Attendances;
 
 use App\Models\Attendance;
+use App\Models\AttendanceDetails;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
@@ -14,7 +15,7 @@ class AttendanceDetailsNegativeTest extends TestCase
     public function store_attendance_details_with_wrong_fields()
     {
         $this->withoutExceptionHandling();
-        $Attendance = Attendance::inRandomOrder()->first();
+        $Attendance = Attendance::factory()->create();
         $data = [
             'attendance_id' => $Attendance->id,
             'title' => 1,
@@ -31,7 +32,7 @@ class AttendanceDetailsNegativeTest extends TestCase
     public function update_attendance_details_with_wrong_fields()
     {
         $this->withoutExceptionHandling();
-        $Attendance = Attendance::inRandomOrder()->first();
+        $Attendance = AttendanceDetails::factory()->create();
         $data = [
             'title' => 1,
             'contents' => "",

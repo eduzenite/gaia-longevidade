@@ -3,6 +3,7 @@
 namespace Tests\Feature\Attendances;
 
 use App\Models\Attendance;
+use App\Models\Speciality;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
@@ -32,14 +33,16 @@ class AttendancePositiveTest extends TestCase
             $date->addDays(rand(0, 5));
         }
         $timeMinutes = ["30", "00"];
-        $user = User::inRandomOrder()->where('role', 1)->first();
-        $doctor = User::inRandomOrder()->where('role', 2)->first();
+        $user = User::factory()->create();
+        $doctor = User::factory()->create();
+        $speciality = Speciality::factory()->create();
         $data = [
             'user_id' => $user->id,
             'doctor_id' => $doctor->id,
             'appointment' => $date->format('Y-m-d H:i'),
             'time' => rand(1, 2).':'.$timeMinutes[rand(0, 1)],
             'type' => rand(0, 2),
+            'speciality_id' => $speciality->id,
             'amount' => rand(150, 350).'.'.rand(10, 99)
         ];
         $this->post(route('attendances.store'), $data)
@@ -59,7 +62,7 @@ class AttendancePositiveTest extends TestCase
         }else{
             $date->addDays(rand(0, 5));
         }
-        $Attendance = Attendance::inRandomOrder()->first();
+        $Attendance = Attendance::factory()->create();
         $timeMinutes = ["30", "00"];
         $data = [
             'appointment' => $date->format('Y-m-d H:i'),
@@ -78,7 +81,7 @@ class AttendancePositiveTest extends TestCase
     public function show_attendance()
     {
         $this->withoutExceptionHandling();
-        $Attendance = Attendance::with('attendance_details')->inRandomOrder()->first();
+        $Attendance = Attendance::factory()->create();
         $this->get(route('attendances.show', ['id' => $Attendance->id]))
             ->assertStatus(200);
     }
@@ -89,7 +92,7 @@ class AttendancePositiveTest extends TestCase
     public function delete_attendance()
     {
         $this->withoutExceptionHandling();
-        $Attendance = Attendance::inRandomOrder()->first();
+        $Attendance = Attendance::factory()->create();
         $this->delete(route('attendances.destroy', ['id' => $Attendance->id]))
             ->assertStatus(200)
             ->assertJson(['deleted' => true]);

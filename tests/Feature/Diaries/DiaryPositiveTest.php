@@ -27,7 +27,7 @@ class DiaryPositiveTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $faker = Faker::create();
-        $user = User::inRandomOrder()->where('role', 1)->first();
+        $user = User::factory()->create();
         $date = Carbon::today();
         if(rand(0,1)){
             $date->subDays(rand(0, 35));
@@ -57,7 +57,7 @@ class DiaryPositiveTest extends TestCase
         }else{
             $date->addDays(rand(0, 5));
         }
-        $Attendance = Diary::inRandomOrder()->first();
+        $Attendance = Diary::factory()->create();
         $data = [
             'appointment' => $date->format('Y-m-d H:i'),
             'description' => $faker->sentence(150, true),
@@ -73,7 +73,7 @@ class DiaryPositiveTest extends TestCase
     public function show_diary()
     {
         $this->withoutExceptionHandling();
-        $Diary = Diary::inRandomOrder()->first();
+        $Diary = Diary::factory()->create();
         $this->get(route('diaries.show', ['id' => $Diary->id]))
             ->assertStatus(200);
     }
@@ -84,7 +84,7 @@ class DiaryPositiveTest extends TestCase
     public function delete_diary()
     {
         $this->withoutExceptionHandling();
-        $Diary = Diary::inRandomOrder()->first();
+        $Diary = Diary::factory()->create();
         $this->delete(route('diaries.destroy', ['id' => $Diary->id]))
             ->assertStatus(200)
             ->assertJson(['deleted' => true]);

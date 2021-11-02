@@ -16,7 +16,7 @@ class AttendanceDetailsPositiveTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $faker = Faker::create();
-        $Attendance = Attendance::inRandomOrder()->first();
+        $Attendance = Attendance::factory()->create();
         $data = [
             'attendance_id' => $Attendance->id,
             'title' => 'Hipótese',
@@ -34,7 +34,7 @@ class AttendanceDetailsPositiveTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $faker = Faker::create();
-        $AttendanceDetails = AttendanceDetails::inRandomOrder()->first();
+        $AttendanceDetails = AttendanceDetails::factory()->create();
         $data = [
             'title' => 'Diagnóstico',
             'contents' => $faker->sentence(500, true),
@@ -50,7 +50,7 @@ class AttendanceDetailsPositiveTest extends TestCase
     public function delete_attendance_details()
     {
         $this->withoutExceptionHandling();
-        $AttendanceDetails = AttendanceDetails::inRandomOrder()->first();
+        $AttendanceDetails = AttendanceDetails::factory()->create();
         $this->delete(route('attendances-details.destroy', ['id' => $AttendanceDetails->id]))
             ->assertStatus(200)
             ->assertJson(['deleted' => true]);

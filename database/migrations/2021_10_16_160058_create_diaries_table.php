@@ -17,7 +17,8 @@ class CreateDiariesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->foreign('user_id')->references('id')->on('users');
             $table->datetime('appointment');
-            $table->text('description');
+            $table->text('description')->nullable();
+            $table->string('feeling', 2)->nullable();
             $table->timestamps();
         });
     }

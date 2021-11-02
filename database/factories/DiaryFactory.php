@@ -23,7 +23,7 @@ class DiaryFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::inRandomOrder()->first(),
+            'user_id' => User::factory(),
             'appointment' => date('Y-m-d H:i:s'),
             'description' => $this->faker->sentence(500, true)
         ];

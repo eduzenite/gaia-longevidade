@@ -8,6 +8,7 @@
         "php": ">=7.4",
         "ext-json": "*",
         "fruitcake/laravel-cors": "^2.0",
+        "google/apiclient": "^2.11",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.4.3",
         "intervention/image": "^2.7",
@@ -16,6 +17,8 @@
         "laravel/socialite": "^5.2",
         "laravel/telescope": "^4.6",
         "laravel/tinker": "^2.5",
+        "league/oauth2-google": "^4.0",
+        "spatie/laravel-google-calendar": "^3.4",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
@@ -58,7 +61,10 @@
     "extra": {
         "laravel": {
             "dont-discover": []
-        }
+        },
+        "google-aplication-service": [
+            "Calendar"
+        ]
     },
     "config": {
         "optimize-autoloader": true,

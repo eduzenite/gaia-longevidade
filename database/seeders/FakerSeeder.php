@@ -1,12 +1,11 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\Attendance;
 use App\Models\AttendanceDetails;
 use App\Models\Diary;
 use App\Models\File;
-use App\Models\Specialist;
+use App\Models\Speciality;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
@@ -22,10 +21,10 @@ class FakerSeeder extends Seeder
     public function run()
     {
 
-        User::factory(50)->create()->each(function ($User) {
+        User::factory(20)->create()->each(function ($User) {
             if(rand(0, 1)){
-                $Specialist = Specialist::inRandomOrder()->first();
-                $User->specialists()->sync($Specialist);
+                $Specialist = Speciality::inRandomOrder()->first();
+                $User->specialities()->sync($Specialist);
                 $User->role = 2;
                 $User->save();
             }
@@ -76,8 +75,8 @@ class FakerSeeder extends Seeder
         });
         Diary::factory(10)->create()->each(function ($Diary) {
             $faker = Faker::create();
-            $Specialist = Specialist::inRandomOrder()->first();
-            $Diary->specialist()->sync($Specialist);
+            $Specialist = Speciality::inRandomOrder()->first();
+            $Diary->speciality()->sync($Specialist);
 
             $folder = 'storage/app/public/diary/'.$Diary->id;
             if(!is_dir($folder)) {

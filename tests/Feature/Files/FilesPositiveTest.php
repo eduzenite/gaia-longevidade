@@ -3,11 +3,9 @@
 namespace Tests\Feature\Files;
 
 use App\Models\Attendance;
-use App\Models\AttendanceDetails;
 use App\Models\File;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class FilesPositiveTest extends TestCase
@@ -18,13 +16,13 @@ class FilesPositiveTest extends TestCase
     public function store_attendance_file()
     {
         $this->withoutExceptionHandling();
-        $Attendance = Attendance::inRandomOrder()->first();
+        $Attendance = Attendance::factory()->create();
         $faker = Faker::create();
         $folder = 'storage/app/public/test';
         if(!is_dir($folder)) {
             mkdir($folder, 0755, true);
         }
-        $filePath = $faker->image($folder, 1900, 1267, 'Medicine', true, false, '1');
+        $filePath = $faker->image($folder, 1900, 1267);
         $data = [
             'attendance_id' => $Attendance->id,
             'file' => new UploadedFile($filePath,'diary-file.jpg', 'image/jpeg', null, true),
@@ -32,7 +30,7 @@ class FilesPositiveTest extends TestCase
         ];
         $this->postJson(route('attendances-files.store'), $data)
             ->assertStatus(200);
-//        unlink($filePath);
+        unlink($filePath);
     }
 
     /**
@@ -41,7 +39,7 @@ class FilesPositiveTest extends TestCase
     public function update_attendance_file()
     {
         $this->withoutExceptionHandling();
-        $File = File::inRandomOrder()->first();
+        $File = File::factory()->create();
         $data = [
             'title' => 'Diagnóstico',
             'alt' => 'Esse é um novo alt',
@@ -57,7 +55,7 @@ class FilesPositiveTest extends TestCase
     public function delete_attendance_file()
     {
         $this->withoutExceptionHandling();
-        $File = File::inRandomOrder()->first();
+        $File = File::factory()->create();
         $this->delete(route('attendances-files.destroy', ['id' => $File->id]))
             ->assertStatus(200)
             ->assertJson(['deleted' => true]);

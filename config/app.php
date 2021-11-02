@@ -32,6 +32,32 @@ return [
         2 => ['en_US' => 'Sick Note', 'pt_BR' => 'Atestados'],
     ],
 
+    'analysis_feelings' => [
+        1 => ['en_US' => 'Happy', 'pt_BR' => 'Feliz', 'emoji' => '😃'],
+        2 => ['en_US' => 'Sad', 'pt_BR' => 'Triste', 'emoji' => '😢'],
+        3 => ['en_US' => 'Angry', 'pt_BR' => 'Bravo', 'emoji' => '😠'],
+        4 => ['en_US' => 'Worried', 'pt_BR' => 'Preocupado', 'emoji' => '😔'],
+        5 => ['en_US' => 'Shy', 'pt_BR' => 'Tímido', 'emoji' => '😌'],
+        6 => ['en_US' => 'Excited', 'pt_BR' => 'Animado', 'emoji' => '😃'],
+        7 => ['en_US' => 'Surprise', 'pt_BR' => 'Surpreso', 'emoji' => '😱'],
+        8 => ['en_US' => 'Silly', 'pt_BR' => 'Bobo', 'emoji' => '😛'],
+        9 => ['en_US' => 'Embarrassed', 'pt_BR' => 'Envergonhado', 'emoji' => '😳'],
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Google Application
+    |--------------------------------------------------------------------------
+    */
+
+    'google_api_url' => env('GOOGLE_API_URL'),
+    'google_token' => storage_path(env('GOOGLE_TOKEN')),
+    'google_credential' => storage_path(env('GOOGLE_CREDENTIAL')),
+    'calendar_id' => env('GOOGLE_CALENDAR_ID'),
+    'google_email' => env('GOOGLE_EMAIL'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -44,6 +70,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'email' => env('APP_EMAIL'),
 
     /*
     |--------------------------------------------------------------------------

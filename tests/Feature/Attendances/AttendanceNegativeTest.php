@@ -20,7 +20,7 @@ class AttendanceNegativeTest extends TestCase
             'type' => 5,
             'amount' => '200,00'
         ];
-        $this->post(route('diary.store'), $data)
+        $this->post(route('attendances.store'), $data)
             ->assertStatus(400)
             ->assertJson(['error' => 'Bad Request']);
     }
@@ -31,14 +31,14 @@ class AttendanceNegativeTest extends TestCase
     public function update_attendance_with_wrong_fields()
     {
         $this->withoutExceptionHandling();
-        $Attendance = Attendance::inRandomOrder()->first();
+        $Attendance = Attendance::factory()->create();
         $data = [
             'appointment' => "25/08/1986 21:00",
             'time' => "H:i",
             'type' => 5,
             'amount' => '200,00'
         ];
-        $this->put(route('diary.update', ['id' => $Attendance->id]), $data)
+        $this->put(route('attendances.update', ['id' => $Attendance->id]), $data)
             ->assertStatus(400)
             ->assertJson(['error' => 'Bad Request']);
     }
@@ -62,7 +62,7 @@ class AttendanceNegativeTest extends TestCase
             'type' => rand(0, 2),
             'amount' => rand(150, 350).'.'.rand(10, 99)
         ];
-        $this->put(route('diary.update', ['id' => 0]), $data)
+        $this->put(route('attendances.update', ['id' => 0]), $data)
             ->assertStatus(404)
             ->assertJson(['error' => 'Not Found']);
     }
@@ -73,7 +73,7 @@ class AttendanceNegativeTest extends TestCase
     public function show_non_existent_attendance()
     {
         $this->withoutExceptionHandling();
-        $this->get(route('diary.show', ['id' => 0]))
+        $this->get(route('attendances.show', ['id' => 0]))
             ->assertStatus(404)
             ->assertJson(['error' => 'Not Found']);
     }
@@ -84,7 +84,7 @@ class AttendanceNegativeTest extends TestCase
     public function delete_non_existent_attendance()
     {
         $this->withoutExceptionHandling();
-        $this->delete(route('diary.destroy', ['id' =>0]))
+        $this->delete(route('attendances.destroy', ['id' =>0]))
             ->assertStatus(404)
             ->assertJson(['error' => 'Not Found']);
     }
