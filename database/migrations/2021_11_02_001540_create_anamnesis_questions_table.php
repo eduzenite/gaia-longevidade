@@ -15,6 +15,8 @@ class CreateAnamnesisQuestionsTable extends Migration
     {
         Schema::create('anamnesis_questions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('anamnesis_question_id')->nullable()->foreign('anamnesis_question_id')->references('id')->on('anamnesis_questions');
+            $table->string('type', 2);
             $table->json('question');
             $table->timestamps();
         });

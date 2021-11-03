@@ -53,6 +53,7 @@ Route::group([
 Route::group([
     "prefix" => "diaries"
 ], function () {
+    Route::get('/feelings', [DiaryController::class, 'feelings'])->name('diaries.feelings');
     Route::get('/', [DiaryController::class, 'index'])->name('diaries.index');
     Route::post('/', [DiaryController::class, 'store'])->name('diaries.store');
     Route::get('{id}', [DiaryController::class, 'show'])->name('diaries.show');

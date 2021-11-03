@@ -14,6 +14,22 @@ return [
         4 => ['en_US' => 'Administrator ', 'pt_BR' => 'Administrador'],
     ],
 
+    'asaas_status' => [
+        1 => ['status' => 'PENDING', 'language' => ['en_US' => 'Awaiting payment', 'pt_BR' => 'Aguardando pagamento']],
+        2 => ['status' => 'RECEIVED', 'language' => ['en_US' => 'Received (balance already credited to the account)', 'pt_BR' => 'Recebida (saldo já creditado na conta)']],
+        3 => ['status' => 'CONFIRMED', 'language' => ['en_US' => 'Payment confirmed (balance not yet credited)', 'pt_BR' => 'Pagamento confirmado (saldo ainda não creditado)']],
+        4 => ['status' => 'OVERDUE', 'language' => ['en_US' => 'Expired', 'pt_BR' => 'Vencida']],
+        5 => ['status' => 'REFUNDED', 'language' => ['en_US' => 'Reversed', 'pt_BR' => 'Estornada']],
+        6 => ['status' => 'RECEIVED_IN_CASH', 'language' => ['en_US' => 'Received in cash (does not generate account balance)', 'pt_BR' => 'Recebida em dinheiro (não gera saldo na conta)']],
+        7 => ['status' => 'REFUND_REQUESTED', 'language' => ['en_US' => 'Reversal Requested', 'pt_BR' => 'Estorno Solicitado']],
+        8 => ['status' => 'CHARGEBACK_REQUESTED', 'language' => ['en_US' => 'Chargeback received', 'pt_BR' => 'Recebido chargeback']],
+        9 => ['status' => 'CHARGEBACK_DISPUTE', 'language' => ['en_US' => 'In chargeback dispute (if documents are presented for contestation)', 'pt_BR' => 'Em disputa de chargeback (caso sejam apresentados documentos para contestação)']],
+        10 => ['status' => 'AWAITING_CHARGEBACK_REVERSAL', 'language' => ['en_US' => 'Dispute won, awaiting transfer from the acquirer', 'pt_BR' => 'Disputa vencida, aguardando repasse da adquirente']],
+        11 => ['status' => 'DUNNING_REQUESTED', 'language' => ['en_US' => 'In the process of recovery', 'pt_BR' => 'Em processo de recuperação']],
+        12 => ['status' => 'DUNNING_RECEIVED', 'language' => ['en_US' => 'Recovered', 'pt_BR' => 'Recuperada']],
+        13 => ['status' => 'AWAITING_RISK_ANALYSIS', 'language' => ['en_US' => 'Payment under analysis ', 'pt_BR' => 'Pagamento em análise']]
+    ],
+
     'attendance_status' => [
         1 => ['en_US' => 'Scheduled', 'pt_BR' => 'Agendado'],
         2 => ['en_US' => 'In progress', 'pt_BR' => 'Em andamento'],
@@ -32,7 +48,7 @@ return [
         2 => ['en_US' => 'Sick Note', 'pt_BR' => 'Atestados'],
     ],
 
-    'analysis_feelings' => [
+    'feelings' => [
         1 => ['en_US' => 'Happy', 'pt_BR' => 'Feliz', 'emoji' => '😃'],
         2 => ['en_US' => 'Sad', 'pt_BR' => 'Triste', 'emoji' => '😢'],
         3 => ['en_US' => 'Angry', 'pt_BR' => 'Bravo', 'emoji' => '😠'],
@@ -42,6 +58,30 @@ return [
         7 => ['en_US' => 'Surprise', 'pt_BR' => 'Surpreso', 'emoji' => '😱'],
         8 => ['en_US' => 'Silly', 'pt_BR' => 'Bobo', 'emoji' => '😛'],
         9 => ['en_US' => 'Embarrassed', 'pt_BR' => 'Envergonhado', 'emoji' => '😳'],
+    ],
+
+    'anamnesis_questions_format' => [
+        1 => 'text',
+        2 => 'textarea',
+        3 => 'number',
+        4 => 'checkbox',
+        5 => 'radio',
+        6 => 'select',
+        7 => 'boolean',
+        8 => 'date',
+        9 => 'time',
+        10 => 'link',
+    ],
+
+    'feeding_hours' => [
+        1 => ['pt_BR' => 'Café da manhã', 'en_US' => 'Breakfast'],
+        2 => ['pt_BR' => 'Lanche da manhã', 'en_US' => 'Morning snack'],
+        3 => ['pt_BR' => 'Almoço', 'en_US' => 'Lunch'],
+        4 => ['pt_BR' => 'Café da tarde', 'en_US' => 'Afternoon coffee'],
+        5 => ['pt_BR' => 'Jantar', 'en_US' => 'Dinner'],
+        6 => ['pt_BR' => 'Ceia', 'en_US' => 'Supper'],
+        7 => ['pt_BR' => 'Pré-treino', 'en_US' => 'Pre workout'],
+        8 => ['pt_BR' => 'Pós-treino', 'en_US' => 'After training '],
     ],
 
 

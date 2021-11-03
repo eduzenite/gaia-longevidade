@@ -22,24 +22,24 @@ class FileFactory extends Factory
      */
     public function definition()
     {
-        $filePath = 'storage/app/public/attendance/test/image.jpg';
+        $filePath = 'storage/app/public/attendance/test/';
         $images = [
             'alt' => $this->faker->sentence(10, true),
-            'path' => $filePath,
+            'path' => $this->faker->image($filePath,1900,1267),
             'width' => 1900,
             'height' => 1267,
             'large' => [
-                'path' => $filePath,
+                'path' => $this->faker->image($filePath,1024,768),
                 'width' => 1024,
                 'height' => 768
             ],
             'medium' => [
-                'path' => $filePath,
+                'path' => $this->faker->image($filePath,800,534),
                 'width' => 800,
                 'height' => 534
             ],
             'thumbnail' => [
-                'path' => $filePath,
+                'path' => $this->faker->image($filePath,500,333),
                 'width' => 500,
                 'height' => 333
             ],

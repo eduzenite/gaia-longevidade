@@ -22,8 +22,11 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $filePath = 'storage/app/public/attendance/test/';
         return [
             'name' => $this->faker->name(),
+            'photo' => $this->faker->image($filePath,500,500),
+            'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail(),
             'role' => rand(1, 4),
             'timezone' => $this->faker->timezone,

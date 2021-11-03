@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDiaryMetasTable extends Migration
+class CreateRemunerationsFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateDiaryMetasTable extends Migration
      */
     public function up()
     {
-        Schema::create('diary_metas', function (Blueprint $table) {
+        Schema::create('remunerations_files', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('diary_id')->foreign('diary_id')->references('id')->on('diaries');
-            $table->string('meta');
-            $table->json('value');
-            $table->timestamps();
+            $table->bigInteger('remuneration_id');
+            $table->bigInteger('file_id');
         });
     }
 
@@ -29,6 +27,6 @@ class CreateDiaryMetasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('diary_metas');
+        Schema::dropIfExists('remunerations_files');
     }
 }

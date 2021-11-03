@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\AnamnesisQuestions;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class AnamnesisQuestionsFactory extends Factory
+class AnamnesisAnswersFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,12 +14,10 @@ class AnamnesisQuestionsFactory extends Factory
      */
     public function definition()
     {
-        $question = ['en_US' => $this->faker->sentence(100, true), 'pt_BR' => $this->faker->sentence(100, true)];
-        $type = rand(1, 10);
+        $item = ['pt_BR' => [$this->faker->sentence(2, true), $this->faker->sentence(3, true)]];
         return [
             'anamnesis_question_id' => AnamnesisQuestions::factory(),
-            'type' => $type,
-            'question' => json_encode($question),
+            'answers' => json_encode($item)
         ];
     }
 }

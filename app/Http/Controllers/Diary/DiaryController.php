@@ -111,4 +111,14 @@ class DiaryController extends Controller
             return response()->json(['error' => 'Not Found'], 404);
         }
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function feelings()
+    {
+        return response()->json(config('app.feelings'));
+    }
 }

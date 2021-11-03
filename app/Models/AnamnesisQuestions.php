@@ -14,5 +14,15 @@ class AnamnesisQuestions extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['question'];
+    protected $fillable = ['type', 'question', 'anamnesis_question_id'];
+
+    /**
+     * Get all attendance details
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function anamnesisAnswers ()
+    {
+        return $this->hasOne(AnamnesisAnswers::class);
+    }
 }

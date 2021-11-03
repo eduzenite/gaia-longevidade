@@ -14,7 +14,7 @@ class DiaryMeta extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['meta', 'value'];
+    protected $fillable = ['diary_id', 'meta', 'value'];
 
     /**
      * Get all attendance details

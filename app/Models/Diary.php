@@ -14,7 +14,7 @@ class Diary extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['user_id', 'appointment', 'description'];
+    protected $fillable = ['user_id', 'appointment', 'description', 'feeling'];
 
     /**
      * Get all attendance details
