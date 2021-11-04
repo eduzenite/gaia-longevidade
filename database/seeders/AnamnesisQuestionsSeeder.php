@@ -53,11 +53,13 @@ class AnamnesisQuestionsSeeder extends Seeder
         ];
         foreach($list as $item){
             $AnamnesisQuestions = new AnamnesisQuestions();
-            $AnamnesisQuestions->anamnesis_question_id = $item['category'];
+            if(isset($item['category'])){
+                $AnamnesisQuestions->anamnesis_question_id = $item['category'];
+            }
             $AnamnesisQuestions->type = json_encode($item['type']);
             $AnamnesisQuestions->question = json_encode($item['language']);
             $AnamnesisQuestions->save();
-            if($item['options']){
+            if(isset($item['options'])){
                 $AnamnesisAnswers = new AnamnesisAnswers();
                 $AnamnesisAnswers->anamnesis_question_id = $AnamnesisQuestions->id;
                 $AnamnesisAnswers->answers = json_encode($item['options']);

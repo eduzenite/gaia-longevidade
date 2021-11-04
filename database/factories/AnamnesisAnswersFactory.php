@@ -14,7 +14,7 @@ class AnamnesisAnswersFactory extends Factory
      */
     public function definition()
     {
-        $item = ['pt_BR' => [$this->faker->sentence(2, true), $this->faker->sentence(3, true)]];
+        $item = ['pt_BR' => [$this->faker->sentence(2, true), 'en_US' => $this->faker->sentence(3, true)]];
         return [
             'anamnesis_question_id' => AnamnesisQuestions::factory(),
             'answers' => json_encode($item)

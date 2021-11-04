@@ -81,7 +81,7 @@ return [
         5 => ['pt_BR' => 'Jantar', 'en_US' => 'Dinner'],
         6 => ['pt_BR' => 'Ceia', 'en_US' => 'Supper'],
         7 => ['pt_BR' => 'Pré-treino', 'en_US' => 'Pre workout'],
-        8 => ['pt_BR' => 'Pós-treino', 'en_US' => 'After training '],
+        8 => ['pt_BR' => 'Pós-treino', 'en_US' => 'After workout'],
     ],
 
 

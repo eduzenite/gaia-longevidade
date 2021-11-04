@@ -22,7 +22,7 @@ class FileFactory extends Factory
      */
     public function definition()
     {
-        $filePath = 'storage/app/public/attendance/test/';
+        $filePath = 'storage/app/public/test/';
         $images = [
             'alt' => $this->faker->sentence(10, true),
             'path' => $this->faker->image($filePath,1900,1267),

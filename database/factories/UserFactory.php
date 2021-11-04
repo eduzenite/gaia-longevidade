@@ -22,7 +22,7 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $filePath = 'storage/app/public/attendance/test/';
+        $filePath = 'storage/app/public/test/';
         return [
             'name' => $this->faker->name(),
             'photo' => $this->faker->image($filePath,500,500),

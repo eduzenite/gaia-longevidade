@@ -17,7 +17,7 @@ class CreateMenusTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('doctor_id')->foreign('doctor_id')->references('id')->on('users');
-            $table->timestamp('validity');
+            $table->timestamp('validity')->nullable();
             $table->text('comments');
             $table->timestamps();
         });

@@ -25,7 +25,8 @@ class DiaryFactory extends Factory
         return [
             'user_id' => User::factory(),
             'appointment' => date('Y-m-d H:i:s'),
-            'description' => $this->faker->sentence(500, true)
+            'description' => $this->faker->sentence(500, true),
+            'feeling' => rand(1, 9)
         ];
     }
 }

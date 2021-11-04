@@ -14,7 +14,7 @@ class AttendanceDetails extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['title', 'contents'];
+    protected $fillable = ['attendance_id', 'title', 'contents'];
 
     /**
      * Get all attendance details
