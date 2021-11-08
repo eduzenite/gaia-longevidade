@@ -9,6 +9,17 @@ use Illuminate\Support\Facades\Validator;
 
 class AttendanceDetailsController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(Request $request)
+    {
+        $AttendanceDetails = AttendanceDetails::paginate();
+        return response()->json($AttendanceDetails);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -19,62 +30,84 @@ class AttendanceDetailsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'contents' => 'required|string',
-            'attendance_id' => 'required|integer',
+            'attendance_id' => 'required',
+            'title' => 'required',
+            'contents' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => 'Bad Request', 'messages' => $validator->errors()], 400);
+            return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
         }
-        $Attendance = new AttendanceDetails();
-        $Attendance->attendance_id = $request->attendance_id;
-        $Attendance->title = $request->title;
-        $Attendance->contents = $request->contents;
-        $Attendance->save();
-        return response()->json($Attendance);
+        $AttendanceDetails = new AttendanceDetails();
+        $AttendanceDetails->attendance_id = $request->attendance_id;
+        $AttendanceDetails->title = $request->title;
+        $AttendanceDetails->contents = $request->contents;
+        $AttendanceDetails->save();
+        return response()->json($AttendanceDetails, 201);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $attendanceId
+     * @param  int  $attendanceDetailId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($attendanceId, $attendanceDetailId)
+    {
+        $AttendanceDetails = AttendanceDetails::where('attendance_id', $attendanceId)->find($attendanceDetailId);
+        if($AttendanceDetails){
+            return response()->json($AttendanceDetails);
+        }else{
+            return response()->json(['message' => 'Not Found'], 404);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $attendanceId
+     * @param  int  $attendanceDetailId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $attendanceId, $attendanceDetailId)
     {
-        $Attendance = AttendanceDetails::find($id);
-        if($Attendance) {
+        $AttendanceDetails = AttendanceDetails::where('attendance_id', $attendanceId)->find($attendanceDetailId);
+        if($AttendanceDetails) {
             $validator = Validator::make($request->all(), [
-                'title' => 'required|string',
-                'contents' => 'required|string',
+                'attendance_id' => 'Required',
+                'title' => 'Required',
+                'contents' => 'Required',
             ]);
             if ($validator->fails()) {
-                return response()->json(['error' => 'Bad Request', 'messages' => $validator->errors()], 400);
+                return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
             }
-            $Attendance->title = $request->title;
-            $Attendance->contents = $request->contents;
-            $Attendance->save();
-            return response()->json(array_merge($request->all(), ['updated' => true]));
+            $AttendanceDetails->attendance_id = $request->attendance_id;
+            $AttendanceDetails->title = $request->title;
+            $AttendanceDetails->contents = $request->contents;
+            $AttendanceDetails->save();
+            $AttendanceDetails->message = 'Updated';
+            return response()->json($AttendanceDetails);
         }else{
-            return response()->json(['error' => 'Not Found'], 404);
+            return response()->json(['message' => 'Not Found'], 404);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $attendanceId
+     * @param  int  $attendanceDetailId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($attendanceId, $attendanceDetailId)
     {
-        $AttendanceDetails = AttendanceDetails::find($id);
+        $AttendanceDetails = AttendanceDetails::where('attendance_id', $attendanceId)->find($attendanceDetailId);
         if($AttendanceDetails){
             $AttendanceDetails->delete();
-            return response()->json(['deleted' => true]);
+            return response()->json(['message' => 'Deleted']);
         }else{
-            return response()->json(['error' => 'Not Found'], 404);
+            return response()->json(['message' => 'Not Found'], 404);
         }
     }
 }

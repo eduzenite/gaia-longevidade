@@ -18,9 +18,10 @@ class AnamnesisMetaTest extends TestCase
     public function testListAnamnesisMeta()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get(route('anamnesismeta.index'));
+        $Anamnesis = Anamnesis::factory()->create();
+        $response = $this->get(route('anamnesismetas.index', ['anamnesisId' => $Anamnesis->id]));
         $response->assertStatus(200);
-        $fields = ['status', 'current_page', 'data', 'to', 'total'];
+        $fields = ['message', 'status', 'current_page', 'data', 'to', 'total', 'first_page_url', 'from', 'last_page', 'last_page_url', 'links', 'next_page_url', 'path', 'per_page', 'prev_page_url'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -30,15 +31,16 @@ class AnamnesisMetaTest extends TestCase
     public function testCreateAnamnesisMeta()
     {
         $this->withoutExceptionHandling();
+        $Anamnesis = Anamnesis::factory()->create();
         $faker = Faker::create();
         $data = [
             'anamnesis_id' => Anamnesis::factory()->create()->id,
             'meta' => $faker->sentence(5, true),
             'value' => $faker->sentence(500, true),
         ];
-        $response = $this->post(route('anamnesismeta.store'), $data);
+        $response = $this->post(route('anamnesismetas.store', ['anamnesisId' => $Anamnesis->id]), $data);
         $response->assertStatus(201);
-        $fields = ['id', 'created_at', 'updated_at', 'anamnesis_id', 'meta', 'value'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'anamnesis_id', 'meta', 'value'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -49,9 +51,9 @@ class AnamnesisMetaTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $AnamnesisMeta = AnamnesisMeta::factory()->create();
-        $response = $this->get(route('anamnesismeta.show', ['id' => $AnamnesisMeta->id]));
+        $response = $this->get(route('anamnesismetas.show', ['anamnesisId' => $AnamnesisMeta->anamnesis_id, 'anamnesisMetaId' => $AnamnesisMeta->id]));
         $response->assertStatus(200);
-        $fields = ['id', 'created_at', 'updated_at', 'anamnesis_id', 'meta', 'value'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'anamnesis_id', 'meta', 'value'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -68,9 +70,9 @@ class AnamnesisMetaTest extends TestCase
             'meta' => $faker->sentence(5, true),
             'value' => $faker->sentence(500, true),
         ];
-        $response = $this->put(route('anamnesismeta.update', ['id' => $AnamnesisMeta->id]), $data);
+        $response = $this->put(route('anamnesismetas.update', ['anamnesisId' => $AnamnesisMeta->anamnesis_id, 'anamnesisMetaId' => $AnamnesisMeta->id]), $data);
         $response->assertStatus(200);
-        $fields = ['id', 'created_at', 'updated_at', 'anamnesis_id', 'meta', 'value'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'updated', 'anamnesis_id', 'meta', 'value'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -81,8 +83,9 @@ class AnamnesisMetaTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $AnamnesisMeta = AnamnesisMeta::factory()->create();
-        $response = $this->delete(route('anamnesismeta.destroy', ['id' => $AnamnesisMeta->id]));
+        $response = $this->delete(route('anamnesismetas.destroy', ['anamnesisId' => $AnamnesisMeta->anamnesis_id, 'anamnesisMetaId' => $AnamnesisMeta->id]));
         $response->assertStatus(200);
-        $response->assertJson(['deleted' => true]);
+        $response->assertJson(['message' => 'Deleted']);
     }
+
 }

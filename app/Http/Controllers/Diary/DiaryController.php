@@ -17,14 +17,7 @@ class DiaryController extends Controller
      */
     public function index(Request $request)
     {
-        $Diary = Diary::where(function ($query) use ($request) {
-            if($request->type){
-                $query->where('type', $request->type);
-            }
-            if($request->appointment){
-                $query->whereBetween('appointment', array($request->appointment->start_date, $request->appointment->and_date.' 23:59'));
-            }
-        })->paginate();
+        $Diary = Diary::paginate();
         return response()->json($Diary);
     }
 
@@ -38,33 +31,35 @@ class DiaryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
-            'appointment' => 'required|date_format:Y-m-d H:i',
+            'appointment' => 'required',
             'description' => 'required',
+            'feeling' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => 'Bad Request', 'messages' => $validator->errors()], 400);
+            return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
         }
         $Diary = new Diary();
         $Diary->user_id = $request->user_id;
         $Diary->appointment = $request->appointment;
         $Diary->description = $request->description;
+        $Diary->feeling = $request->feeling;
         $Diary->save();
-        return response()->json($Diary);
+        return response()->json($Diary, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $diaryId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($diaryId)
     {
-        $Diary = Diary::with('file')->with('speciality')->find($id);
+        $Diary = Diary::find($diaryId);
         if($Diary){
             return response()->json($Diary);
         }else{
-            return response()->json(['error' => 'Not Found'], 404);
+            return response()->json(['message' => 'Not Found'], 404);
         }
     }
 
@@ -72,53 +67,48 @@ class DiaryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $diaryId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $diaryId)
     {
-        $Diary = Diary::find($id);
+        $Diary = Diary::find($diaryId);
         if($Diary) {
             $validator = Validator::make($request->all(), [
-                'appointment' => 'required|date_format:Y-m-d H:i',
+                'user_id' => 'required',
+                'appointment' => 'required',
                 'description' => 'required',
+                'feeling' => 'required',
             ]);
             if ($validator->fails()) {
-                return response()->json(['error' => 'Bad Request', 'messages' => $validator->errors()], 400);
+                return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
             }
+            $Diary->user_id = $request->user_id;
             $Diary->appointment = $request->appointment;
             $Diary->description = $request->description;
+            $Diary->feeling = $request->feeling;
             $Diary->save();
-            return response()->json(array_merge($request->all(), ['updated' => true]));
+            $Diary->message = 'Updated';
+            return response()->json($Diary);
         }else{
-            return response()->json(['error' => 'Not Found'], 404);
+            return response()->json(['message' => 'Not Found'], 404);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $diaryId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($diaryId)
     {
-        $Diary = Diary::find($id);
+        $Diary = Diary::find($diaryId);
         if($Diary){
             $Diary->delete();
-            return response()->json(['deleted' => true]);
+            return response()->json(['message' => 'Deleted']);
         }else{
-            return response()->json(['error' => 'Not Found'], 404);
+            return response()->json(['message' => 'Not Found'], 404);
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function feelings()
-    {
-        return response()->json(config('app.feelings'));
     }
 }

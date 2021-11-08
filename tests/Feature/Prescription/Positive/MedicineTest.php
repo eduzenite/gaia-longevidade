@@ -5,8 +5,6 @@ namespace Tests\Feature\Prescription\Positive;
 use App\Models\Medicine;
 use App\Models\Prescription;
 use Faker\Factory as Faker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -18,9 +16,10 @@ class MedicineTest extends TestCase
     public function testListMedicine()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get(route('medicine.index'));
+        $Prescription = Prescription::factory()->create();
+        $response = $this->get(route('medicines.index', ['prescriptionId' => $Prescription->id]));
         $response->assertStatus(200);
-        $fields = ['status', 'current_page', 'data', 'to', 'total'];
+        $fields = ['message', 'status', 'current_page', 'data', 'to', 'total', 'first_page_url', 'from', 'last_page', 'last_page_url', 'links', 'next_page_url', 'path', 'per_page', 'prev_page_url'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -38,9 +37,10 @@ class MedicineTest extends TestCase
             'schedules' => $faker->sentence(100, true),
             'quantity' => $faker->sentence(100, true),
         ];
-        $response = $this->post(route('medicine.store'), $data);
+        $Prescription = Prescription::factory()->create();
+        $response = $this->post(route('medicines.store', ['prescriptionId' => $Prescription->id]), $data);
         $response->assertStatus(201);
-        $fields = ['id', 'created_at', 'updated_at', 'prescription_id', 'title', 'dosage', 'schedules', 'quantity'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'prescription_id', 'title', 'dosage', 'schedules', 'quantity'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -51,9 +51,9 @@ class MedicineTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $Medicine = Medicine::factory()->create();
-        $response = $this->get(route('medicine.show', ['id' => $Medicine->id]));
+        $response = $this->get(route('medicines.show', ['id' => $Medicine->id]));
         $response->assertStatus(200);
-        $fields = ['id', 'created_at', 'updated_at', 'prescription_id', 'title', 'dosage', 'schedules', 'quantity'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'prescription_id', 'title', 'dosage', 'schedules', 'quantity'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -66,14 +66,15 @@ class MedicineTest extends TestCase
         $Medicine = Medicine::factory()->create();
         $faker = Faker::create();
         $data = [
+            'prescription_id' => Prescription::factory()->create()->id,
             'title' => $faker->sentence(100, true),
             'dosage' => $faker->sentence(100, true),
             'schedules' => $faker->sentence(100, true),
             'quantity' => $faker->sentence(100, true),
         ];
-        $response = $this->put(route('medicine.update', ['id' => $Medicine->id]), $data);
+        $response = $this->put(route('medicines.update', ['id' => $Medicine->id]), $data);
         $response->assertStatus(200);
-        $fields = ['id', 'created_at', 'updated_at', 'prescription_id', 'title', 'dosage', 'schedules', 'quantity'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'updated', 'prescription_id', 'title', 'dosage', 'schedules', 'quantity'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -84,8 +85,8 @@ class MedicineTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $Medicine = Medicine::factory()->create();
-        $response = $this->delete(route('medicine.destroy', ['id' => $Medicine->id]));
+        $response = $this->delete(route('medicines.destroy', ['id' => $Medicine->id]));
         $response->assertStatus(200);
-        $response->assertJson(['deleted' => true]);
+        $response->assertJson(['message' => 'Deleted']);
     }
 }

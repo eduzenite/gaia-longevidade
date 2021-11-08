@@ -20,7 +20,7 @@ use App\Http\Controllers\User\RemunerationController;
 use App\Http\Controllers\User\UserAvailabilityController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserMetaController;
-use App\Http\Controllers\User\UserSpecialtyController;
+use App\Http\Controllers\User\UserSpecialityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +35,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('routes', function (){
+    $routes = [];
+    foreach (Route::getRoutes()->getIterator() as $route){
+        if (strpos($route->uri, 'api') !== false){
+            $routes[] = $route->uri;
+        }
+    }
+    return response()->json($routes);
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -45,227 +55,171 @@ Route::group([
 ], function () {
     Route::get('/', [AnamnesisController::class, 'index'])->name('anamnesis.index');
     Route::post('/', [AnamnesisController::class, 'store'])->name('anamnesis.store');
-    Route::get('{id}', [AnamnesisController::class, 'show'])->name('anamnesis.show');
-    Route::put('{id}', [AnamnesisController::class, 'update'])->name('anamnesis.update');
-    Route::delete('{id}', [AnamnesisController::class, 'destroy'])->name('anamnesis.destroy');
+    Route::get('{anamnesisId}', [AnamnesisController::class, 'show'])->name('anamnesis.show');
+    Route::put('{anamnesisId}', [AnamnesisController::class, 'update'])->name('anamnesis.update');
+    Route::delete('{anamnesisId}', [AnamnesisController::class, 'destroy'])->name('anamnesis.destroy');
+
+    Route::get('/{anamnesisId}/metas', [AnamnesisMetaController::class, 'index'])->name('anamnesismetas.index');
+    Route::post('/{anamnesisId}/metas', [AnamnesisMetaController::class, 'store'])->name('anamnesismetas.store');
+    Route::get('/{anamnesisId}/metas/{anamnesisMetaId}', [AnamnesisMetaController::class, 'show'])->name('anamnesismetas.show');
+    Route::put('/{anamnesisId}/metas/{anamnesisMetaId}', [AnamnesisMetaController::class, 'update'])->name('anamnesismetas.update');
+    Route::delete('/{anamnesisId}/metas/{anamnesisMetaId}', [AnamnesisMetaController::class, 'destroy'])->name('anamnesismetas.destroy');
 });
 
 
 Route::group([
-    "prefix" => "anamnesisanswers"
-], function () {
-    Route::get('/', [AnamnesisAnswersController::class, 'index'])->name('anamnesisanswers.index');
-    Route::post('/', [AnamnesisAnswersController::class, 'store'])->name('anamnesisanswers.store');
-    Route::get('{id}', [AnamnesisAnswersController::class, 'show'])->name('anamnesisanswers.show');
-    Route::put('{id}', [AnamnesisAnswersController::class, 'update'])->name('anamnesisanswers.update');
-    Route::delete('{id}', [AnamnesisAnswersController::class, 'destroy'])->name('anamnesisanswers.destroy');
-});
-
-
-Route::group([
-    "prefix" => "anamnesismeta"
-], function () {
-    Route::get('/', [AnamnesisMetaController::class, 'index'])->name('anamnesismeta.index');
-    Route::post('/', [AnamnesisMetaController::class, 'store'])->name('anamnesismeta.store');
-    Route::get('{id}', [AnamnesisMetaController::class, 'show'])->name('anamnesismeta.show');
-    Route::put('{id}', [AnamnesisMetaController::class, 'update'])->name('anamnesismeta.update');
-    Route::delete('{id}', [AnamnesisMetaController::class, 'destroy'])->name('anamnesismeta.destroy');
-});
-
-
-Route::group([
-    "prefix" => "anamnesisquestions"
+    "prefix" => "anamnesis-questions"
 ], function () {
     Route::get('/', [AnamnesisQuestionsController::class, 'index'])->name('anamnesisquestions.index');
     Route::post('/', [AnamnesisQuestionsController::class, 'store'])->name('anamnesisquestions.store');
-    Route::get('{id}', [AnamnesisQuestionsController::class, 'show'])->name('anamnesisquestions.show');
-    Route::put('{id}', [AnamnesisQuestionsController::class, 'update'])->name('anamnesisquestions.update');
-    Route::delete('{id}', [AnamnesisQuestionsController::class, 'destroy'])->name('anamnesisquestions.destroy');
+    Route::get('/{anamnesisQuestionId}', [AnamnesisQuestionsController::class, 'show'])->name('anamnesisquestions.show');
+    Route::put('/{anamnesisQuestionId}', [AnamnesisQuestionsController::class, 'update'])->name('anamnesisquestions.update');
+    Route::delete('/{anamnesisQuestionId}', [AnamnesisQuestionsController::class, 'destroy'])->name('anamnesisquestions.destroy');
+
+    Route::get('/{anamnesisQuestionId}/answers', [AnamnesisAnswersController::class, 'index'])->name('anamnesisanswers.index');
+    Route::post('/{anamnesisQuestionId}/answers', [AnamnesisAnswersController::class, 'store'])->name('anamnesisanswers.store');
+    Route::get('/{anamnesisQuestionId}/answers/{anamnesisQuestionAnswerId}', [AnamnesisAnswersController::class, 'show'])->name('anamnesisanswers.show');
+    Route::put('/{anamnesisQuestionId}/answers/{anamnesisQuestionAnswerId}', [AnamnesisAnswersController::class, 'update'])->name('anamnesisanswers.update');
+    Route::delete('/{anamnesisQuestionId}/answers/{anamnesisQuestionAnswerId}', [AnamnesisAnswersController::class, 'destroy'])->name('anamnesisanswers.destroy');
 });
 
-
 Route::group([
-    "prefix" => "attendance"
+    "prefix" => "attendances"
 ], function () {
-    Route::get('/', [AttendanceController::class, 'index'])->name('attendance.index');
-    Route::post('/', [AttendanceController::class, 'store'])->name('attendance.store');
-    Route::get('{id}', [AttendanceController::class, 'show'])->name('attendance.show');
-    Route::put('{id}', [AttendanceController::class, 'update'])->name('attendance.update');
-    Route::delete('{id}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
+    Route::get('/', [AttendanceController::class, 'index'])->name('attendances.index');
+    Route::post('/', [AttendanceController::class, 'store'])->name('attendances.store');
+    Route::get('{attendanceId}', [AttendanceController::class, 'show'])->name('attendances.show');
+    Route::put('{attendanceId}', [AttendanceController::class, 'update'])->name('attendances.update');
+    Route::delete('{attendanceId}', [AttendanceController::class, 'destroy'])->name('attendances.destroy');
+
+    Route::get('/{attendanceId}/details/', [AttendanceDetailsController::class, 'index'])->name('attendancedetails.index');
+    Route::post('/{attendanceId}/details/', [AttendanceDetailsController::class, 'store'])->name('attendancedetails.store');
+    Route::get('/{attendanceId}/details/{attendanceDetailId}', [AttendanceDetailsController::class, 'show'])->name('attendancedetails.show');
+    Route::put('/{attendanceId}/details/{attendanceDetailId}', [AttendanceDetailsController::class, 'update'])->name('attendancedetails.update');
+    Route::delete('/{attendanceId}/details/{attendanceDetailId}', [AttendanceDetailsController::class, 'destroy'])->name('attendancedetails.destroy');
+
+    Route::get('/{attendanceId}/files/', [AttendanceFileController::class, 'index'])->name('attendancefiles.index');
+    Route::post('/{attendanceId}/files/', [AttendanceFileController::class, 'store'])->name('attendancefiles.store');
+    Route::get('/{attendanceId}/files/{attendanceFileId}', [AttendanceFileController::class, 'show'])->name('attendancefiles.show');
+    Route::delete('/{attendanceId}/files/{attendanceFileId}', [AttendanceFileController::class, 'destroy'])->name('attendancefiles.destroy');
 });
 
 
 Route::group([
-    "prefix" => "attendancedetails"
-], function () {
-    Route::get('/', [AttendanceDetailsController::class, 'index'])->name('attendancedetails.index');
-    Route::post('/', [AttendanceDetailsController::class, 'store'])->name('attendancedetails.store');
-    Route::get('{id}', [AttendanceDetailsController::class, 'show'])->name('attendancedetails.show');
-    Route::put('{id}', [AttendanceDetailsController::class, 'update'])->name('attendancedetails.update');
-    Route::delete('{id}', [AttendanceDetailsController::class, 'destroy'])->name('attendancedetails.destroy');
-});
-
-
-Route::group([
-    "prefix" => "attendancefiles"
-], function () {
-    Route::get('/', [AttendanceFileController::class, 'index'])->name('attendancefiles.index');
-    Route::post('/', [AttendanceFileController::class, 'store'])->name('attendancefiles.store');
-    Route::get('{id}', [AttendanceFileController::class, 'show'])->name('attendancefiles.show');
-    Route::delete('{id}', [AttendanceFileController::class, 'destroy'])->name('attendancefiles.destroy');
-});
-
-
-Route::group([
-    "prefix" => "diary"
+    "prefix" => "diaries"
 ], function () {
     Route::get('/feelings', [DiaryController::class, 'feelings'])->name('diaries.feelings');
-    Route::get('/', [DiaryController::class, 'index'])->name('diary.index');
-    Route::post('/', [DiaryController::class, 'store'])->name('diary.store');
-    Route::get('{id}', [DiaryController::class, 'show'])->name('diary.show');
-    Route::put('{id}', [DiaryController::class, 'update'])->name('diary.update');
-    Route::delete('{id}', [DiaryController::class, 'destroy'])->name('diary.destroy');
+    Route::get('/', [DiaryController::class, 'index'])->name('diaries.index');
+    Route::post('/', [DiaryController::class, 'store'])->name('diaries.store');
+    Route::get('{diaryId}', [DiaryController::class, 'show'])->name('diaries.show');
+    Route::put('{diaryId}', [DiaryController::class, 'update'])->name('diaries.update');
+    Route::delete('{diaryId}', [DiaryController::class, 'destroy'])->name('diaries.destroy');
+
+    Route::get('/{diaryId}/metas/', [DiaryMetaController::class, 'index'])->name('diarymetas.index');
+    Route::post('/{diaryId}/metas/', [DiaryMetaController::class, 'store'])->name('diarymetas.store');
+    Route::get('/{diaryId}/metas/{diaryMetaId}', [DiaryMetaController::class, 'show'])->name('diarymetas.show');
+    Route::put('/{diaryId}/metas/{diaryMetaId}', [DiaryMetaController::class, 'update'])->name('diarymetas.update');
+    Route::delete('/{diaryId}/metas/{diaryMetaId}', [DiaryMetaController::class, 'destroy'])->name('diarymetas.destroy');
 });
 
 
 Route::group([
-    "prefix" => "diarymeta"
+    "prefix" => "files"
 ], function () {
-    Route::get('/', [DiaryMetaController::class, 'index'])->name('diarymeta.index');
-    Route::post('/', [DiaryMetaController::class, 'store'])->name('diarymeta.store');
-    Route::get('{id}', [DiaryMetaController::class, 'show'])->name('diarymeta.show');
-    Route::put('{id}', [DiaryMetaController::class, 'update'])->name('diarymeta.update');
-    Route::delete('{id}', [DiaryMetaController::class, 'destroy'])->name('diarymeta.destroy');
+    Route::get('/', [FileController::class, 'index'])->name('files.index');
+    Route::post('/', [FileController::class, 'store'])->name('files.store');
+    Route::get('{FileId}', [FileController::class, 'show'])->name('files.show');
+    Route::put('{FileId}', [FileController::class, 'update'])->name('files.update');
+    Route::delete('{FileId}', [FileController::class, 'destroy'])->name('files.destroy');
 });
 
 
 Route::group([
-    "prefix" => "file"
+    "prefix" => "menus"
 ], function () {
-    Route::get('/', [FileController::class, 'index'])->name('file.index');
-    Route::post('/', [FileController::class, 'store'])->name('file.store');
-    Route::get('{id}', [FileController::class, 'show'])->name('file.show');
-    Route::put('{id}', [FileController::class, 'update'])->name('file.update');
-    Route::delete('{id}', [FileController::class, 'destroy'])->name('file.destroy');
+    Route::get('/', [MenuController::class, 'index'])->name('menus.index');
+    Route::post('/', [MenuController::class, 'store'])->name('menus.store');
+    Route::get('{menuId}', [MenuController::class, 'show'])->name('menus.show');
+    Route::put('{menuId}', [MenuController::class, 'update'])->name('menus.update');
+    Route::delete('{menuId}', [MenuController::class, 'destroy'])->name('menus.destroy');
+
+    Route::get('/{menuId}/foods/', [MenuFoodController::class, 'index'])->name('menufoods.index');
+    Route::post('/{menuId}/foods/', [MenuFoodController::class, 'store'])->name('menufoods.store');
+    Route::get('/{menuId}/foods/{menuFoodId}', [MenuFoodController::class, 'show'])->name('menufoods.show');
+    Route::put('/{menuId}/foods/{menuFoodId}', [MenuFoodController::class, 'update'])->name('menufoods.update');
+    Route::delete('/{menuId}/foods/{menuFoodId}', [MenuFoodController::class, 'destroy'])->name('menufoods.destroy');
 });
 
 
 Route::group([
-    "prefix" => "medicine"
+    "prefix" => "prescriptions"
 ], function () {
-    Route::get('/', [MedicineController::class, 'index'])->name('medicine.index');
-    Route::post('/', [MedicineController::class, 'store'])->name('medicine.store');
-    Route::get('{id}', [MedicineController::class, 'show'])->name('medicine.show');
-    Route::put('{id}', [MedicineController::class, 'update'])->name('medicine.update');
-    Route::delete('{id}', [MedicineController::class, 'destroy'])->name('medicine.destroy');
+    Route::get('/', [PrescriptionController::class, 'index'])->name('prescriptions.index');
+    Route::post('/', [PrescriptionController::class, 'store'])->name('prescriptions.store');
+    Route::get('{prescriptionId}', [PrescriptionController::class, 'show'])->name('prescriptions.show');
+    Route::put('{prescriptionId}', [PrescriptionController::class, 'update'])->name('prescriptions.update');
+    Route::delete('{prescriptionId}', [PrescriptionController::class, 'destroy'])->name('prescriptions.destroy');
+
+    Route::get('/{prescriptionId}/medicines/', [MedicineController::class, 'index'])->name('medicines.index');
+    Route::post('/{prescriptionId}/medicines/', [MedicineController::class, 'store'])->name('medicines.store');
+    Route::get('/{prescriptionId}/medicines/{prescriptionMedicineId}', [MedicineController::class, 'show'])->name('medicines.show');
+    Route::put('/{prescriptionId}/medicines/{prescriptionMedicineId}', [MedicineController::class, 'update'])->name('medicines.update');
+    Route::delete('/{prescriptionId}/medicines/{prescriptionMedicineId}', [MedicineController::class, 'destroy'])->name('medicines.destroy');
 });
 
 
 Route::group([
-    "prefix" => "menu"
+    "prefix" => "specialities"
 ], function () {
-    Route::get('/', [MenuController::class, 'index'])->name('menu.index');
-    Route::post('/', [MenuController::class, 'store'])->name('menu.store');
-    Route::get('{id}', [MenuController::class, 'show'])->name('menu.show');
-    Route::put('{id}', [MenuController::class, 'update'])->name('menu.update');
-    Route::delete('{id}', [MenuController::class, 'destroy'])->name('menu.destroy');
+    Route::get('/', [SpecialityController::class, 'index'])->name('specialities.index');
+    Route::post('/', [SpecialityController::class, 'store'])->name('specialities.store');
+    Route::get('{specialityId}', [SpecialityController::class, 'show'])->name('specialities.show');
+    Route::put('{specialityId}', [SpecialityController::class, 'update'])->name('specialities.update');
+    Route::delete('{specialityId}', [SpecialityController::class, 'destroy'])->name('specialities.destroy');
 });
 
 
 Route::group([
-    "prefix" => "menufood"
+    "prefix" => "users"
 ], function () {
-    Route::get('/', [MenuFoodController::class, 'index'])->name('menufood.index');
-    Route::post('/', [MenuFoodController::class, 'store'])->name('menufood.store');
-    Route::get('{id}', [MenuFoodController::class, 'show'])->name('menufood.show');
-    Route::put('{id}', [MenuFoodController::class, 'update'])->name('menufood.update');
-    Route::delete('{id}', [MenuFoodController::class, 'destroy'])->name('menufood.destroy');
+    Route::get('/', [UserController::class, 'index'])->name('users.index');
+    Route::post('/', [UserController::class, 'store'])->name('users.store');
+    Route::get('{usersId}', [UserController::class, 'show'])->name('users.show');
+    Route::put('{usersId}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('{usersId}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::get('/{usersId}/remunerations/', [RemunerationController::class, 'index'])->name('remunerations.index');
+    Route::post('/{usersId}/remunerations/', [RemunerationController::class, 'store'])->name('remunerations.store');
+    Route::get('/{usersId}/remunerations/{userRemunerationId}', [RemunerationController::class, 'show'])->name('remunerations.show');
+    Route::put('/{usersId}/remunerations/{userRemunerationId}', [RemunerationController::class, 'update'])->name('remunerations.update');
+    Route::delete('/{usersId}/remunerations/{userRemunerationId}', [RemunerationController::class, 'destroy'])->name('remunerations.destroy');
+
+    Route::get('/{usersId}/availabilities/', [UserAvailabilityController::class, 'index'])->name('useravailabilities.index');
+    Route::post('/{usersId}/availabilities/', [UserAvailabilityController::class, 'store'])->name('useravailabilities.store');
+    Route::get('/{usersId}/availabilities/{userAvailabilityId}', [UserAvailabilityController::class, 'show'])->name('useravailabilities.show');
+    Route::put('/{usersId}/availabilities/{userAvailabilityId}', [UserAvailabilityController::class, 'update'])->name('useravailabilities.update');
+    Route::delete('/{usersId}/availabilities/{userAvailabilityId}', [UserAvailabilityController::class, 'destroy'])->name('useravailabilities.destroy');
+
+    Route::get('/{usersId}/metas/', [UserMetaController::class, 'index'])->name('usermetas.index');
+    Route::post('/{usersId}/metas/', [UserMetaController::class, 'store'])->name('usermetas.store');
+    Route::get('/{usersId}/metas/{userMetaId}', [UserMetaController::class, 'show'])->name('usermetas.show');
+    Route::put('/{usersId}/metas/{userMetaId}', [UserMetaController::class, 'update'])->name('usermetas.update');
+    Route::delete('/{usersId}/metas/{userMetaId}', [UserMetaController::class, 'destroy'])->name('usermetas.destroy');
+
+    Route::get('/{usersId}/specialties/', [UserSpecialityController::class, 'index'])->name('userspecialties.index');
+    Route::post('/{usersId}/specialties/', [UserSpecialityController::class, 'store'])->name('userspecialties.store');
+    Route::get('/{usersId}/specialties/{userSpecialtyId}', [UserSpecialityController::class, 'show'])->name('userspecialties.show');
+    Route::put('/{usersId}/specialties/{userSpecialtyId}', [UserSpecialityController::class, 'update'])->name('userspecialties.update');
+    Route::delete('/{usersId}/specialties/{userSpecialtyId}', [UserSpecialityController::class, 'destroy'])->name('userspecialties.destroy');
 });
 
 
 Route::group([
-    "prefix" => "prescription"
+    "prefix" => "calendars"
 ], function () {
-    Route::get('/', [PrescriptionController::class, 'index'])->name('prescription.index');
-    Route::post('/', [PrescriptionController::class, 'store'])->name('prescription.store');
-    Route::get('{id}', [PrescriptionController::class, 'show'])->name('prescription.show');
-    Route::put('{id}', [PrescriptionController::class, 'update'])->name('prescription.update');
-    Route::delete('{id}', [PrescriptionController::class, 'destroy'])->name('prescription.destroy');
-});
-
-
-Route::group([
-    "prefix" => "remuneration"
-], function () {
-    Route::get('/', [RemunerationController::class, 'index'])->name('remuneration.index');
-    Route::post('/', [RemunerationController::class, 'store'])->name('remuneration.store');
-    Route::get('{id}', [RemunerationController::class, 'show'])->name('remuneration.show');
-    Route::put('{id}', [RemunerationController::class, 'update'])->name('remuneration.update');
-    Route::delete('{id}', [RemunerationController::class, 'destroy'])->name('remuneration.destroy');
-});
-
-
-Route::group([
-    "prefix" => "speciality"
-], function () {
-    Route::get('/', [SpecialityController::class, 'index'])->name('speciality.index');
-    Route::post('/', [SpecialityController::class, 'store'])->name('speciality.store');
-    Route::get('{id}', [SpecialityController::class, 'show'])->name('speciality.show');
-    Route::put('{id}', [SpecialityController::class, 'update'])->name('speciality.update');
-    Route::delete('{id}', [SpecialityController::class, 'destroy'])->name('speciality.destroy');
-});
-
-
-Route::group([
-    "prefix" => "user"
-], function () {
-    Route::get('/', [UserController::class, 'index'])->name('user.index');
-    Route::post('/', [UserController::class, 'store'])->name('user.store');
-    Route::get('{id}', [UserController::class, 'show'])->name('user.show');
-    Route::put('{id}', [UserController::class, 'update'])->name('user.update');
-    Route::delete('{id}', [UserController::class, 'destroy'])->name('user.destroy');
-});
-
-
-Route::group([
-    "prefix" => "useravailability"
-], function () {
-    Route::get('/', [UserAvailabilityController::class, 'index'])->name('useravailability.index');
-    Route::post('/', [UserAvailabilityController::class, 'store'])->name('useravailability.store');
-    Route::get('{id}', [UserAvailabilityController::class, 'show'])->name('useravailability.show');
-    Route::put('{id}', [UserAvailabilityController::class, 'update'])->name('useravailability.update');
-    Route::delete('{id}', [UserAvailabilityController::class, 'destroy'])->name('useravailability.destroy');
-});
-
-
-Route::group([
-    "prefix" => "usermeta"
-], function () {
-    Route::get('/', [UserMetaController::class, 'index'])->name('usermeta.index');
-    Route::post('/', [UserMetaController::class, 'store'])->name('usermeta.store');
-    Route::get('{id}', [UserMetaController::class, 'show'])->name('usermeta.show');
-    Route::put('{id}', [UserMetaController::class, 'update'])->name('usermeta.update');
-    Route::delete('{id}', [UserMetaController::class, 'destroy'])->name('usermeta.destroy');
-});
-
-
-Route::group([
-    "prefix" => "userspecialty"
-], function () {
-    Route::get('/', [UserSpecialtyController::class, 'index'])->name('userspecialty.index');
-    Route::post('/', [UserSpecialtyController::class, 'store'])->name('userspecialty.store');
-    Route::get('{id}', [UserSpecialtyController::class, 'show'])->name('userspecialty.show');
-    Route::put('{id}', [UserSpecialtyController::class, 'update'])->name('userspecialty.update');
-    Route::delete('{id}', [UserSpecialtyController::class, 'destroy'])->name('userspecialty.destroy');
-});
-
-
-Route::group([
-    "prefix" => "calendar"
-], function () {
-    Route::get('/', [CalendarController::class, 'index'])->name('calendar.index');
-    Route::post('/', [CalendarController::class, 'store'])->name('calendar.store');
-    Route::get('{id}', [CalendarController::class, 'show'])->name('calendar.show');
-    Route::put('{id}', [CalendarController::class, 'update'])->name('calendar.update');
-    Route::delete('{id}', [CalendarController::class, 'destroy'])->name('calendar.destroy');
+    Route::get('/', [CalendarController::class, 'index'])->name('calendars.index');
+    Route::post('/', [CalendarController::class, 'store'])->name('calendars.store');
+    Route::get('{calendarId}', [CalendarController::class, 'show'])->name('calendars.show');
+    Route::put('{calendarId}', [CalendarController::class, 'update'])->name('calendars.update');
+    Route::delete('{calendarId}', [CalendarController::class, 'destroy'])->name('calendars.destroy');
 });

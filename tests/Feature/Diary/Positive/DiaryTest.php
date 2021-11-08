@@ -16,9 +16,9 @@ class DiaryTest extends TestCase
     public function testListDiary()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get(route('diary.index'));
+        $response = $this->get(route('diaries.index'));
         $response->assertStatus(200);
-        $fields = ['status', 'current_page', 'data', 'to', 'total'];
+        $fields = ['message', 'status', 'current_page', 'data', 'to', 'total', 'first_page_url', 'from', 'last_page', 'last_page_url', 'links', 'next_page_url', 'path', 'per_page', 'prev_page_url'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -31,13 +31,13 @@ class DiaryTest extends TestCase
         $faker = Faker::create();
         $data = [
             'user_id' => User::factory()->create()->id,
-            'appointment' => date('Y-m-d H:i:s'),
+            'appointment' => date("Y-m-d H:i:s"),
             'description' => $faker->sentence(500, true),
-            'feeling' => rand(1, 9)
+            'feeling' => rand(1, 9),
         ];
-        $response = $this->post(route('diary.store'), $data);
+        $response = $this->post(route('diaries.store'), $data);
         $response->assertStatus(201);
-        $fields = ['id', 'created_at', 'updated_at', 'user_id', 'appointment', 'description', 'feeling'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'user_id', 'appointment', 'description', 'feeling'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -48,9 +48,9 @@ class DiaryTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $Diary = Diary::factory()->create();
-        $response = $this->get(route('diary.show', ['id' => $Diary->id]));
+        $response = $this->get(route('diaries.show', ['diaryId' => $Diary->id]));
         $response->assertStatus(200);
-        $fields = ['id', 'created_at', 'updated_at', 'user_id', 'appointment', 'description', 'feeling'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'user_id', 'appointment', 'description', 'feeling'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -63,13 +63,14 @@ class DiaryTest extends TestCase
         $Diary = Diary::factory()->create();
         $faker = Faker::create();
         $data = [
-            'appointment' => date('Y-m-d H:i:s'),
+            'user_id' => User::factory()->create()->id,
+            'appointment' => date("Y-m-d H:i:s"),
             'description' => $faker->sentence(500, true),
-            'feeling' => rand(1, 9)
+            'feeling' => rand(1, 9),
         ];
-        $response = $this->put(route('diary.update', ['id' => $Diary->id]), $data);
+        $response = $this->put(route('diaries.update', ['diaryId' => $Diary->id]), $data);
         $response->assertStatus(200);
-        $fields = ['id', 'created_at', 'updated_at', 'user_id', 'appointment', 'description', 'feeling'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'updated', 'user_id', 'appointment', 'description', 'feeling'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -80,19 +81,8 @@ class DiaryTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $Diary = Diary::factory()->create();
-        $response = $this->delete(route('diary.destroy', ['id' => $Diary->id]));
+        $response = $this->delete(route('diaries.destroy', ['diaryId' => $Diary->id]));
         $response->assertStatus(200);
-        $response->assertJson(['deleted' => true]);
+        $response->assertJson(['message' => 'Deleted']);
     }
-
-    /**
-     * @test
-     */
-    public function testFeelingsDiary()
-    {
-        $this->withoutExceptionHandling();
-        $response = $this->put(route('diary.feelings'));
-        $response->assertStatus(200);
-    }
-
 }

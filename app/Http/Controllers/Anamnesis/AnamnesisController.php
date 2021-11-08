@@ -17,14 +17,7 @@ class AnamnesisController extends Controller
      */
     public function index(Request $request)
     {
-        $Anamnesis = Anamnesis::where(function ($query) use ($request) {
-            if($request->user){
-                $query->where('user', $request->user);
-            }
-            if($request->doctor){
-                $query->where('doctor', $request->doctor);
-            }
-        })->paginate();
+        $Anamnesis = Anamnesis::paginate();
         return response()->json($Anamnesis);
     }
 
@@ -37,34 +30,34 @@ class AnamnesisController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|numeric',
-            'doctor_id' => 'required|numeric',
-            'attendance_id' => 'required|numeric',
+            'user_id' => 'required',
+            'doctor_id' => 'required',
+            'attendance_id' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => 'Bad Request', 'messages' => $validator->errors()], 400);
+            return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
         }
         $Anamnesis = new Anamnesis();
         $Anamnesis->user_id = $request->user_id;
         $Anamnesis->doctor_id = $request->doctor_id;
         $Anamnesis->attendance_id = $request->attendance_id;
         $Anamnesis->save();
-        return response()->json($Anamnesis);
+        return response()->json($Anamnesis, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $anamnesisId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($anamnesisId)
     {
-        $Anamnesis = Anamnesis::with('attendance')->with('user')->find($id);
+        $Anamnesis = Anamnesis::find($anamnesisId);
         if($Anamnesis){
             return response()->json($Anamnesis);
         }else{
-            return response()->json(['error' => 'Not Found'], 404);
+            return response()->json(['message' => 'Not Found'], 404);
         }
     }
 
@@ -72,41 +65,42 @@ class AnamnesisController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $anamnesisId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $anamnesisId)
     {
-        $Anamnesis = Anamnesis::find($id);
+        $Anamnesis = Anamnesis::find($anamnesisId);
         if($Anamnesis) {
             $validator = Validator::make($request->all(), [
-                'doctor_id' => 'required|numeric',
+                'doctor_id' => 'Required',
             ]);
             if ($validator->fails()) {
-                return response()->json(['error' => 'Bad Request', 'messages' => $validator->errors()], 400);
+                return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
             }
             $Anamnesis->doctor_id = $request->doctor_id;
             $Anamnesis->save();
-            return response()->json(array_merge($request->all(), ['updated' => true]));
+            $Anamnesis->message = 'Updated';
+            return response()->json($Anamnesis);
         }else{
-            return response()->json(['error' => 'Not Found'], 404);
+            return response()->json(['message' => 'Not Found'], 404);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $anamnesisId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($anamnesisId)
     {
-        $Anamnesis = Anamnesis::find($id);
+        $Anamnesis = Anamnesis::find($anamnesisId);
         if($Anamnesis){
             $Anamnesis->delete();
-            return response()->json(['deleted' => true]);
+            return response()->json(['message' => 'Deleted']);
         }else{
-            return response()->json(['error' => 'Not Found'], 404);
+            return response()->json(['message' => 'Not Found'], 404);
         }
     }
 }

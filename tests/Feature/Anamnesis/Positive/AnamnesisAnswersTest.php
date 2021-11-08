@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Anamnesis\Positive;
 
+use App\Models\Anamnesis;
 use App\Models\AnamnesisAnswers;
 use App\Models\AnamnesisQuestions;
 use Faker\Factory as Faker;
@@ -10,16 +11,16 @@ use Tests\TestCase;
 
 class AnamnesisAnswersTest extends TestCase
 {
-
     /**
      * @test
      */
     public function testListAnamnesisAnswers()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get(route('anamnesisanswers.index'));
+        $AnamnesisAnswers = AnamnesisAnswers::factory()->create();
+        $response = $this->get(route('anamnesisanswers.index', ['anamnesisQuestionId' => $AnamnesisAnswers->anamnesis_question_id]));
         $response->assertStatus(200);
-        $fields = ['status', 'current_page', 'data', 'to', 'total'];
+        $fields = ['message', 'status', 'current_page', 'data', 'to', 'total', 'first_page_url', 'from', 'last_page', 'last_page_url', 'links', 'next_page_url', 'path', 'per_page', 'prev_page_url'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -30,14 +31,14 @@ class AnamnesisAnswersTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $faker = Faker::create();
-        $answes = ['pt_BR' => [$faker->sentence(2, true), 'en_US' => $faker->sentence(3, true)]];
+        $AnamnesisQuestions = AnamnesisQuestions::factory()->create();
         $data = [
-            'anamnesis_question_id' => AnamnesisQuestions::factory()->create()->id,
-            'answers' => $answes,
+            'anamnesis_question_id' => $AnamnesisQuestions->id,
+            'answers' => json_encode(["pt_BR" => [$faker->sentence(2, true), "en_US" => $faker->sentence(3, true)]]),
         ];
-        $response = $this->post(route('anamnesisanswers.store'), $data);
+        $response = $this->post(route('anamnesisanswers.store', ['anamnesisQuestionId' => $AnamnesisQuestions->id]), $data);
         $response->assertStatus(201);
-        $fields = ['id', 'created_at', 'updated_at', 'anamnesis_question_id', 'answers'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'anamnesis_question_id', 'answers'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -48,9 +49,9 @@ class AnamnesisAnswersTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $AnamnesisAnswers = AnamnesisAnswers::factory()->create();
-        $response = $this->get(route('anamnesisanswers.show', ['id' => $AnamnesisAnswers->id]));
+        $response = $this->get(route('anamnesisanswers.show', ['anamnesisQuestionId' => $AnamnesisAnswers->anamnesis_question_id, 'anamnesisQuestionAnswerId' => $AnamnesisAnswers->id]));
         $response->assertStatus(200);
-        $fields = ['id', 'created_at', 'updated_at', 'anamnesis_question_id', 'answers'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'anamnesis_question_id', 'answers'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -62,14 +63,13 @@ class AnamnesisAnswersTest extends TestCase
         $this->withoutExceptionHandling();
         $AnamnesisAnswers = AnamnesisAnswers::factory()->create();
         $faker = Faker::create();
-        $answes = ['pt_BR' => [$faker->sentence(2, true), 'en_US' => $faker->sentence(3, true)]];
         $data = [
             'anamnesis_question_id' => AnamnesisQuestions::factory()->create()->id,
-            'answers' => $answes,
+            'answers' => json_encode(["pt_BR" => [$faker->sentence(2, true), "en_US" => $faker->sentence(3, true)]]),
         ];
-        $response = $this->put(route('anamnesisanswers.update', ['id' => $AnamnesisAnswers->id]), $data);
+        $response = $this->put(route('anamnesisanswers.update', ['anamnesisQuestionId' => $AnamnesisAnswers->anamnesis_question_id, 'anamnesisQuestionAnswerId' => $AnamnesisAnswers->id]), $data);
         $response->assertStatus(200);
-        $fields = ['id', 'created_at', 'updated_at', 'anamnesis_question_id', 'answers'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'updated', 'anamnesis_question_id', 'answers'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -80,8 +80,8 @@ class AnamnesisAnswersTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $AnamnesisAnswers = AnamnesisAnswers::factory()->create();
-        $response = $this->delete(route('anamnesisanswers.destroy', ['id' => $AnamnesisAnswers->id]));
+        $response = $this->delete(route('anamnesisanswers.destroy', ['anamnesisQuestionId' => $AnamnesisAnswers->anamnesis_question_id, 'anamnesisQuestionAnswerId' => $AnamnesisAnswers->id]));
         $response->assertStatus(200);
-        $response->assertJson(['deleted' => true]);
+        $response->assertJson(['message' => 'Deleted']);
     }
 }

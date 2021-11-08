@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\UserAvailability;
+use App\Models\UserSpeciality;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class UserAvailabilityController extends Controller
+class UserSpecialityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class UserAvailabilityController extends Controller
      */
     public function index(Request $request)
     {
-        $UserAvailability = UserAvailability::paginate();
-        return response()->json($UserAvailability);
+        $UserSpeciality = UserSpeciality::paginate();
+        return response()->json($UserSpeciality);
     }
 
     /**
@@ -31,20 +31,16 @@ class UserAvailabilityController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
-            'weekday' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
+            'speciality_id' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
         }
-        $UserAvailability = new UserAvailability();
-        $UserAvailability->user_id = $request->user_id;
-        $UserAvailability->weekday = $request->weekday;
-        $UserAvailability->start_time = $request->start_time;
-        $UserAvailability->end_time = $request->end_time;
-        $UserAvailability->save();
-        return response()->json($UserAvailability);
+        $UserSpeciality = new UserSpeciality();
+        $UserSpeciality->user_id = $request->user_id;
+        $UserSpeciality->speciality_id = $request->speciality_id;
+        $UserSpeciality->save();
+        return response()->json($UserSpeciality);
     }
 
     /**
@@ -55,9 +51,9 @@ class UserAvailabilityController extends Controller
      */
     public function show($id)
     {
-        $UserAvailability = UserAvailability::find($id);
-        if($UserAvailability){
-            return response()->json($UserAvailability);
+        $UserSpeciality = UserSpeciality::find($id);
+        if($UserSpeciality){
+            return response()->json($UserSpeciality);
         }else{
             return response()->json(['message' => 'Not Found'], 404);
         }
@@ -72,24 +68,20 @@ class UserAvailabilityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $UserAvailability = UserAvailability::find($id);
-        if($UserAvailability) {
+        $UserSpeciality = UserSpeciality::find($id);
+        if($UserSpeciality) {
             $validator = Validator::make($request->all(), [
                 'user_id' => 'required',
-                'weekday' => 'required',
-                'start_time' => 'required',
-                'end_time' => 'required',
+                'specialty_id' => 'required',
             ]);
             if ($validator->fails()) {
                 return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
             }
-            $UserAvailability->doctor_id = $request->doctor_id;
-            $UserAvailability->user_id = $request->user_id;
-            $UserAvailability->weekday = $request->weekday;
-            $UserAvailability->start_time = $request->start_time;
-            $UserAvailability->end_time = $request->end_time;
-            $UserAvailability->save();
-            return response()->json(array_merge($UserAvailability));
+            $UserSpeciality->doctor_id = $request->doctor_id;
+            $UserSpeciality->user_id = $request->user_id;
+            $UserSpeciality->specialty_id = $request->specialty_id;
+            $UserSpeciality->save();
+            return response()->json(array_merge($UserSpeciality));
         }else{
             return response()->json(['message' => 'Not Found'], 404);
         }
@@ -103,9 +95,9 @@ class UserAvailabilityController extends Controller
      */
     public function destroy($id)
     {
-        $UserAvailability = UserAvailability::find($id);
-        if($UserAvailability){
-            $UserAvailability->delete();
+        $UserSpeciality = UserSpeciality::find($id);
+        if($UserSpeciality){
+            $UserSpeciality->delete();
             return response()->json(['message' => 'Deleted']);
         }else{
             return response()->json(['message' => 'Not Found'], 404);

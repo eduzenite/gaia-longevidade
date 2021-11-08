@@ -6,8 +6,6 @@ use App\Models\Attendance;
 use App\Models\AttendanceFile;
 use App\Models\File;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -19,9 +17,10 @@ class AttendanceFileTest extends TestCase
     public function testListAttendanceFile()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get(route('attendancefile.index'));
+        $Attendance = Attendance::factory()->create();
+        $response = $this->get(route('attendancefiles.index', ['attendanceId' => $Attendance->id]));
         $response->assertStatus(200);
-        $fields = ['status', 'current_page', 'data', 'to', 'total'];
+        $fields = ['message', 'status', 'current_page', 'data', 'to', 'total', 'first_page_url', 'from', 'last_page', 'last_page_url', 'links', 'next_page_url', 'path', 'per_page', 'prev_page_url'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -37,9 +36,10 @@ class AttendanceFileTest extends TestCase
             'files_id' => File::factory()->create()->id,
             'type' => rand(1, 2),
         ];
-        $response = $this->post(route('attendancefile.store'), $data);
+        $Attendance = Attendance::factory()->create();
+        $response = $this->post(route('attendancefiles.store', ['attendanceId' => $Attendance->id]), $data);
         $response->assertStatus(201);
-        $fields = ['id', 'created_at', 'updated_at', 'user_id', 'attendance_id', 'files_id', 'type'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'user_id', 'attendance_id', 'files_id', 'type'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -50,9 +50,9 @@ class AttendanceFileTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $AttendanceFile = AttendanceFile::factory()->create();
-        $response = $this->get(route('attendancefile.show', ['id' => $AttendanceFile->id]));
+        $response = $this->get(route('attendancefiles.show', ['attendanceId' => $AttendanceFile->attendance_id, 'attendanceFileId' => $AttendanceFile->id]));
         $response->assertStatus(200);
-        $fields = ['id', 'created_at', 'updated_at', 'user_id', 'attendance_id', 'files_id', 'type'];
+        $fields = ['message', 'id', 'created_at', 'updated_at', 'user_id', 'attendance_id', 'files_id', 'type'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
     }
 
@@ -63,9 +63,8 @@ class AttendanceFileTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $AttendanceFile = AttendanceFile::factory()->create();
-        $response = $this->delete(route('attendancefile.destroy', ['id' => $AttendanceFile->id]));
+        $response = $this->delete(route('attendancefiles.destroy', ['attendanceId' => $AttendanceFile->attendance_id, 'attendanceFileId' => $AttendanceFile->id]));
         $response->assertStatus(200);
-        $response->assertJson(['deleted' => true]);
+        $response->assertJson(['message' => 'Deleted']);
     }
-
 }

@@ -22,7 +22,7 @@ class SpecialityFactory extends Factory
     public function definition()
     {
         return [
-            'title' => json_encode(['pt_BR' => $this->faker->sentence(5, true)]),
+            'title' => json_encode(["pt_BR" => $this->faker->sentence(5, true), "en_US" => $this->faker->sentence(5, true)]),
         ];
     }
 
