@@ -16,10 +16,10 @@ class MedicineFactory extends Factory
     {
         return [
             'prescription_id' => Prescription::factory(),
-            'title' => $this->faker->sentence(100, true),
-            'dosage' => $this->faker->sentence(100, true),
-            'schedules' => $this->faker->sentence(100, true),
-            'quantity' => $this->faker->sentence(100, true),
+            'title' => $this->faker->sentence(20, true),
+            'dosage' => $this->faker->sentence(20, true),
+            'schedules' => $this->faker->sentence(20, true),
+            'quantity' => $this->faker->sentence(20, true),
         ];
     }
 }

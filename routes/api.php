@@ -36,10 +36,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('routes', function (){
-    $routes = [];
     foreach (Route::getRoutes()->getIterator() as $route){
         if (strpos($route->uri, 'api') !== false){
-            $routes[] = $route->uri;
+            $routes[] = [
+                'url' => $route->uri,
+                'method' => $route->methods[0]
+            ];
         }
     }
     return response()->json($routes);
@@ -123,15 +125,15 @@ Route::group([
 });
 
 
-Route::group([
-    "prefix" => "files"
-], function () {
-    Route::get('/', [FileController::class, 'index'])->name('files.index');
-    Route::post('/', [FileController::class, 'store'])->name('files.store');
-    Route::get('{FileId}', [FileController::class, 'show'])->name('files.show');
-    Route::put('{FileId}', [FileController::class, 'update'])->name('files.update');
-    Route::delete('{FileId}', [FileController::class, 'destroy'])->name('files.destroy');
-});
+//Route::group([
+//    "prefix" => "files"
+//], function () {
+//    Route::get('/', [FileController::class, 'index'])->name('files.index');
+//    Route::post('/', [FileController::class, 'store'])->name('files.store');
+//    Route::get('{FileId}', [FileController::class, 'show'])->name('files.show');
+//    Route::put('{FileId}', [FileController::class, 'update'])->name('files.update');
+//    Route::delete('{FileId}', [FileController::class, 'destroy'])->name('files.destroy');
+//});
 
 
 Route::group([

@@ -12,25 +12,26 @@ class MedicineController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  int  $prescriptionId
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, $prescriptionId)
     {
-        $Medicine = Medicine::paginate();
+        $Medicine = Medicine::where('prescription_id', $prescriptionId)->paginate();
         return response()->json($Medicine);
     }
 
     /**
      * Store a newly created resource in storage.
      *
+     * @param  int  $prescriptionId
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request, $prescriptionId)
     {
         $validator = Validator::make($request->all(), [
-            'prescription_id' => 'required',
             'title' => 'required',
             'dosage' => 'required',
             'schedules' => 'required',
@@ -40,13 +41,13 @@ class MedicineController extends Controller
             return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
         }
         $Medicine = new Medicine();
-        $Medicine->prescription_id = $request->prescription_id;
+        $Medicine->prescription_id = $prescriptionId;
         $Medicine->title = $request->title;
         $Medicine->dosage = $request->dosage;
         $Medicine->schedules = $request->schedules;
         $Medicine->quantity = $request->quantity;
         $Medicine->save();
-        return response()->json($Medicine);
+        return response()->json($Medicine, 201);
     }
 
     /**
@@ -79,22 +80,21 @@ class MedicineController extends Controller
         $Medicine = Medicine::where('prescription_id', $prescriptionId)->find($prescriptionMedicineId);
         if($Medicine) {
             $validator = Validator::make($request->all(), [
-                'prescription_id' => 'required',
-                'title' => 'required',
-                'dosage' => 'required',
-                'schedules' => 'required',
-                'quantity' => 'required',
+                'title' => 'Required',
+                'dosage' => 'Required',
+                'schedules' => 'Required',
+                'quantity' => 'Required',
             ]);
             if ($validator->fails()) {
                 return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
             }
-            $Medicine->prescription_id = $request->prescription_id;
             $Medicine->title = $request->title;
             $Medicine->dosage = $request->dosage;
             $Medicine->schedules = $request->schedules;
             $Medicine->quantity = $request->quantity;
             $Medicine->save();
-            return response()->json(array_merge($Medicine));
+            $Medicine->message = 'Updated';
+            return response()->json($Medicine);
         }else{
             return response()->json(['message' => 'Not Found'], 404);
         }

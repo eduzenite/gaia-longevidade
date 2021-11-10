@@ -44,18 +44,18 @@ class MenuController extends Controller
         $Menu->validity = $request->validity;
         $Menu->comments = $request->comments;
         $Menu->save();
-        return response()->json($Menu);
+        return response()->json($Menu, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $menuId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($menuId)
     {
-        $Menu = Menu::find($id);
+        $Menu = Menu::find($menuId);
         if($Menu){
             return response()->json($Menu);
         }else{
@@ -67,29 +67,29 @@ class MenuController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $menuId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $menuId)
     {
-        $Menu = Menu::find($id);
+        $Menu = Menu::find($menuId);
         if($Menu) {
             $validator = Validator::make($request->all(), [
-                'user_id' => 'required',
-                'doctor_id' => 'required',
-                'validity' => 'required',
-                'comments' => 'required',
+                'user_id' => 'Required',
+                'doctor_id' => 'Required',
+                'validity' => 'Required',
+                'comments' => 'Required',
             ]);
             if ($validator->fails()) {
                 return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
             }
-            $Menu->doctor_id = $request->doctor_id;
             $Menu->user_id = $request->user_id;
             $Menu->doctor_id = $request->doctor_id;
             $Menu->validity = $request->validity;
             $Menu->comments = $request->comments;
             $Menu->save();
-            return response()->json(array_merge($Menu));
+            $Menu->message = 'Updated';
+            return response()->json($Menu);
         }else{
             return response()->json(['message' => 'Not Found'], 404);
         }
@@ -98,12 +98,12 @@ class MenuController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $menuId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($menuId)
     {
-        $Menu = Menu::find($id);
+        $Menu = Menu::find($menuId);
         if($Menu){
             $Menu->delete();
             return response()->json(['message' => 'Deleted']);

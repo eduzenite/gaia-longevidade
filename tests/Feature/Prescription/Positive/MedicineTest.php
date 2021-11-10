@@ -31,11 +31,10 @@ class MedicineTest extends TestCase
         $this->withoutExceptionHandling();
         $faker = Faker::create();
         $data = [
-            'prescription_id' => Prescription::factory()->create()->id,
-            'title' => $faker->sentence(100, true),
-            'dosage' => $faker->sentence(100, true),
-            'schedules' => $faker->sentence(100, true),
-            'quantity' => $faker->sentence(100, true),
+            'title' => $faker->sentence(20, true),
+            'dosage' => $faker->sentence(20, true),
+            'schedules' => $faker->sentence(20, true),
+            'quantity' => $faker->sentence(20, true),
         ];
         $Prescription = Prescription::factory()->create();
         $response = $this->post(route('medicines.store', ['prescriptionId' => $Prescription->id]), $data);
@@ -51,7 +50,7 @@ class MedicineTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $Medicine = Medicine::factory()->create();
-        $response = $this->get(route('medicines.show', ['id' => $Medicine->id]));
+        $response = $this->get(route('medicines.show', ['prescriptionId' => $Medicine->prescription_id, 'prescriptionMedicineId' => $Medicine->id]));
         $response->assertStatus(200);
         $fields = ['message', 'id', 'created_at', 'updated_at', 'prescription_id', 'title', 'dosage', 'schedules', 'quantity'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
@@ -66,13 +65,12 @@ class MedicineTest extends TestCase
         $Medicine = Medicine::factory()->create();
         $faker = Faker::create();
         $data = [
-            'prescription_id' => Prescription::factory()->create()->id,
-            'title' => $faker->sentence(100, true),
-            'dosage' => $faker->sentence(100, true),
-            'schedules' => $faker->sentence(100, true),
-            'quantity' => $faker->sentence(100, true),
+            'title' => $faker->sentence(20, true),
+            'dosage' => $faker->sentence(20, true),
+            'schedules' => $faker->sentence(20, true),
+            'quantity' => $faker->sentence(20, true),
         ];
-        $response = $this->put(route('medicines.update', ['id' => $Medicine->id]), $data);
+        $response = $this->put(route('medicines.update', ['prescriptionId' => $Medicine->prescription_id, 'prescriptionMedicineId' => $Medicine->id]), $data);
         $response->assertStatus(200);
         $fields = ['message', 'id', 'created_at', 'updated_at', 'updated', 'prescription_id', 'title', 'dosage', 'schedules', 'quantity'];
         $response->assertJson(fn (AssertableJson $json) => $json->hasAny($fields));
@@ -85,7 +83,7 @@ class MedicineTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $Medicine = Medicine::factory()->create();
-        $response = $this->delete(route('medicines.destroy', ['id' => $Medicine->id]));
+        $response = $this->delete(route('medicines.destroy', ['prescriptionId' => $Medicine->prescription_id, 'prescriptionMedicineId' => $Medicine->id]));
         $response->assertStatus(200);
         $response->assertJson(['message' => 'Deleted']);
     }

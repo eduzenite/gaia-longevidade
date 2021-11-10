@@ -59,7 +59,7 @@ $array = [
         'info' => 'xxx'
     ]],
     ['class' => 'Medicine', 'fields' => [
-        'prescription_id' => '\App\Models\Pescription::factory()->create()->id',
+        'prescription_id' => '\App\Models\Prescription::factory()->create()->id',
         'title' => '$faker->sentence(100, true)',
         'dosage' => '$faker->sentence(100, true)',
         'schedules' => '$faker->sentence(100, true)',

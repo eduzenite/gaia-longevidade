@@ -33,6 +33,7 @@ class FileController extends Controller
             'title' => 'required',
             'type' => 'required',
             'info' => 'required',
+            'file' => 'required|mimes:pdf,jpg,jpeg,png|max:12048',
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
@@ -40,9 +41,9 @@ class FileController extends Controller
         $File = new File();
         $File->title = $request->title;
         $File->type = $request->type;
-        $File->info = $request->info;
+        $File->info = json_encode($request->info);
         $File->save();
-        return response()->json($File);
+        return response()->json($File, 201);
     }
 
     /**
@@ -74,18 +75,16 @@ class FileController extends Controller
         if($File) {
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
-                'type' => 'required',
-                'info' => 'required',
+                'alt' => 'required',
             ]);
             if ($validator->fails()) {
                 return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
             }
-            $File->doctor_id = $request->doctor_id;
             $File->title = $request->title;
-            $File->type = $request->type;
-            $File->info = $request->info;
+            $File->info->alt = $request->alt;
             $File->save();
-            return response()->json(array_merge($File));
+            $File->message = 'Updated';
+            return response()->json($File);
         }else{
             return response()->json(['message' => 'Not Found'], 404);
         }

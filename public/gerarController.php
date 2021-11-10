@@ -96,7 +96,7 @@ foreach ($array as $item){
         if($<?php echo $item['class'] ?>) {
             $validator = Validator::make($request->all(), [
 <?php foreach ($item['fields'] as $field){ ?>
-                '<?php echo $field ?>' => 'Required',
+                '<?php echo $field ?>' => 'required',
 <?php } ?>
             ]);
             if ($validator->fails()) {

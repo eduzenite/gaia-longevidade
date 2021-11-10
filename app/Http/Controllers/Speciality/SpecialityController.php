@@ -38,18 +38,18 @@ class SpecialityController extends Controller
         $Speciality = new Speciality();
         $Speciality->title = $request->title;
         $Speciality->save();
-        return response()->json($Speciality);
+        return response()->json($Speciality, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $specialityId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($specialityId)
     {
-        $Speciality = Speciality::find($id);
+        $Speciality = Speciality::find($specialityId);
         if($Speciality){
             return response()->json($Speciality);
         }else{
@@ -61,23 +61,23 @@ class SpecialityController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $specialityId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $specialityId)
     {
-        $Speciality = Speciality::find($id);
+        $Speciality = Speciality::find($specialityId);
         if($Speciality) {
             $validator = Validator::make($request->all(), [
-                'title' => 'required',
+                'title' => 'Required',
             ]);
             if ($validator->fails()) {
                 return response()->json(['message' => 'Bad Request', 'validator' => $validator->errors()], 400);
             }
-            $Speciality->doctor_id = $request->doctor_id;
             $Speciality->title = $request->title;
             $Speciality->save();
-            return response()->json(array_merge($Speciality));
+            $Speciality->message = 'Updated';
+            return response()->json($Speciality);
         }else{
             return response()->json(['message' => 'Not Found'], 404);
         }
@@ -86,12 +86,12 @@ class SpecialityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $specialityId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($specialityId)
     {
-        $Speciality = Speciality::find($id);
+        $Speciality = Speciality::find($specialityId);
         if($Speciality){
             $Speciality->delete();
             return response()->json(['message' => 'Deleted']);
