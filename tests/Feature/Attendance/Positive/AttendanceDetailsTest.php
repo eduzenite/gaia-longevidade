@@ -4,8 +4,10 @@ namespace Tests\Feature\Attendance\Positive;
 
 use App\Models\Attendance;
 use App\Models\AttendanceDetails;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AttendanceDetailsTest extends TestCase
@@ -15,6 +17,7 @@ class AttendanceDetailsTest extends TestCase
      */
     public function testListAttendanceDetails()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Attendance = Attendance::factory()->create();
         $response = $this->get(route('attendancedetails.index', ['attendanceId' => $Attendance->id]));
@@ -28,6 +31,7 @@ class AttendanceDetailsTest extends TestCase
      */
     public function testCreateAttendanceDetails()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $faker = Faker::create();
         $data = [
@@ -47,6 +51,7 @@ class AttendanceDetailsTest extends TestCase
      */
     public function testShowDetailsAttendanceDetails()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AttendanceDetails = AttendanceDetails::factory()->create();
         $response = $this->get(route('attendancedetails.show', ['attendanceId' => $AttendanceDetails->attendance_id, 'attendanceDetailId' => $AttendanceDetails->id]));
@@ -60,6 +65,7 @@ class AttendanceDetailsTest extends TestCase
      */
     public function testUpdateAttendanceDetails()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AttendanceDetails = AttendanceDetails::factory()->create();
         $faker = Faker::create();
@@ -79,6 +85,7 @@ class AttendanceDetailsTest extends TestCase
      */
     public function testDeleteAttendanceDetails()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AttendanceDetails = AttendanceDetails::factory()->create();
         $response = $this->delete(route('attendancedetails.destroy', ['attendanceId' => $AttendanceDetails->attendance_id, 'attendanceDetailId' => $AttendanceDetails->id]));

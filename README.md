@@ -1,4 +1,5 @@
 # Atualização
+
 ```shell
 composer install
 composer update
@@ -13,8 +14,10 @@ npm update
 ```shell
 composer install
 composer update
+php artisan key:generate
 php artisan migrate
 php artisan db:seed
-php artisan test
-npm update
+php artisan storage:link
+mkdir storage/app/public/test
+php artisan test --filter Positive
 ```

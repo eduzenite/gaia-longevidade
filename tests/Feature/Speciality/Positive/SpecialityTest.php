@@ -3,8 +3,10 @@
 namespace Tests\Feature\Speciality\Positive;
 
 use App\Models\Speciality;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class SpecialityTest extends TestCase
@@ -14,6 +16,7 @@ class SpecialityTest extends TestCase
      */
     public function testListSpeciality()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $response = $this->get(route('specialities.index'));
         $response->assertStatus(200);
@@ -26,6 +29,7 @@ class SpecialityTest extends TestCase
      */
     public function testCreateSpeciality()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $faker = Faker::create();
         $data = [
@@ -42,6 +46,7 @@ class SpecialityTest extends TestCase
      */
     public function testShowDetailsSpeciality()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Speciality = Speciality::factory()->create();
         $response = $this->get(route('specialities.show', ['specialityId' => $Speciality->id]));
@@ -55,6 +60,7 @@ class SpecialityTest extends TestCase
      */
     public function testUpdateSpeciality()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Speciality = Speciality::factory()->create();
         $faker = Faker::create();
@@ -72,6 +78,7 @@ class SpecialityTest extends TestCase
      */
     public function testDeleteSpeciality()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Speciality = Speciality::factory()->create();
         $response = $this->delete(route('specialities.destroy', ['specialityId' => $Speciality->id]));

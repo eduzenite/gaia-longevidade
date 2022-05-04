@@ -6,6 +6,7 @@ use App\Models\Anamnesis;
 use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AnamnesisTest extends TestCase
@@ -15,6 +16,7 @@ class AnamnesisTest extends TestCase
      */
     public function testListAnamnesis()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $response = $this->get(route('anamnesis.index'));
         $response->assertStatus(200);
@@ -27,6 +29,7 @@ class AnamnesisTest extends TestCase
      */
     public function testCreateAnamnesis()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $data = [
             'user_id' => User::factory()->create()->id,
@@ -44,6 +47,7 @@ class AnamnesisTest extends TestCase
      */
     public function testShowDetailsAnamnesis()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Anamnesis = Anamnesis::factory()->create();
         $response = $this->get(route('anamnesis.show', ['anamnesisId' => $Anamnesis->id]));
@@ -57,6 +61,7 @@ class AnamnesisTest extends TestCase
      */
     public function testUpdateAnamnesis()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Anamnesis = Anamnesis::factory()->create();
         $data = [
@@ -75,6 +80,7 @@ class AnamnesisTest extends TestCase
      */
     public function testDeleteAnamnesis()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Anamnesis = Anamnesis::factory()->create();
         $response = $this->delete(route('anamnesis.destroy', ['anamnesisId' => $Anamnesis->id]));

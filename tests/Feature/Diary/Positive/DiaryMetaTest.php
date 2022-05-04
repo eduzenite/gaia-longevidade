@@ -4,8 +4,10 @@ namespace Tests\Feature\Diary\Positive;
 
 use App\Models\Diary;
 use App\Models\DiaryMeta;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class DiaryMetaTest extends TestCase
@@ -15,6 +17,7 @@ class DiaryMetaTest extends TestCase
      */
     public function testListDiaryMeta()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Diary = Diary::factory()->create();
         $response = $this->get(route('diarymetas.index', ['diaryId' => $Diary->id]));
@@ -28,6 +31,7 @@ class DiaryMetaTest extends TestCase
      */
     public function testCreateDiaryMeta()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $faker = Faker::create();
         $data = [
@@ -47,6 +51,7 @@ class DiaryMetaTest extends TestCase
      */
     public function testShowDetailsDiaryMeta()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $DiaryMeta = DiaryMeta::factory()->create();
         $response = $this->get(route('diarymetas.show', ['diaryId' => $DiaryMeta->diary_id,'diaryMetaId' => $DiaryMeta->id]));
@@ -60,6 +65,7 @@ class DiaryMetaTest extends TestCase
      */
     public function testUpdateDiaryMeta()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $DiaryMeta = DiaryMeta::factory()->create();
         $faker = Faker::create();
@@ -79,6 +85,7 @@ class DiaryMetaTest extends TestCase
      */
     public function testDeleteDiaryMeta()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $DiaryMeta = DiaryMeta::factory()->create();
         $response = $this->delete(route('diarymetas.destroy', ['diaryId' => $DiaryMeta->diary_id,'diaryMetaId' => $DiaryMeta->id]));

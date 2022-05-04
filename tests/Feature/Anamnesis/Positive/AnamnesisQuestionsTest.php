@@ -3,8 +3,10 @@
 namespace Tests\Feature\Anamnesis\Positive;
 
 use App\Models\AnamnesisQuestions;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AnamnesisQuestionsTest extends TestCase
@@ -14,6 +16,7 @@ class AnamnesisQuestionsTest extends TestCase
      */
     public function testListAnamnesisQuestions()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $response = $this->get(route('anamnesisquestions.index'));
         $response->assertStatus(200);
@@ -26,6 +29,7 @@ class AnamnesisQuestionsTest extends TestCase
      */
     public function testCreateAnamnesisQuestions()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $faker = Faker::create();
         $data = [
@@ -44,6 +48,7 @@ class AnamnesisQuestionsTest extends TestCase
      */
     public function testShowDetailsAnamnesisQuestions()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AnamnesisQuestions = AnamnesisQuestions::factory()->create();
         $response = $this->get(route('anamnesisquestions.show', ['anamnesisQuestionId' => $AnamnesisQuestions->id]));
@@ -57,6 +62,7 @@ class AnamnesisQuestionsTest extends TestCase
      */
     public function testUpdateAnamnesisQuestions()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AnamnesisQuestions = AnamnesisQuestions::factory()->create();
         $faker = Faker::create();
@@ -76,6 +82,7 @@ class AnamnesisQuestionsTest extends TestCase
      */
     public function testDeleteAnamnesisQuestions()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AnamnesisQuestions = AnamnesisQuestions::factory()->create();
         $response = $this->delete(route('anamnesisquestions.destroy', ['anamnesisQuestionId' => $AnamnesisQuestions->id]));

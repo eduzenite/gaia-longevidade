@@ -7,6 +7,7 @@ use App\Models\Speciality;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AttendanceTest extends TestCase
@@ -16,6 +17,7 @@ class AttendanceTest extends TestCase
      */
     public function testListAttendance()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $response = $this->get(route('attendances.index'));
         $response->assertStatus(200);
@@ -28,6 +30,7 @@ class AttendanceTest extends TestCase
      */
     public function testCreateAttendance()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $date = Carbon::now();
         if(rand(0,1)){
@@ -58,6 +61,7 @@ class AttendanceTest extends TestCase
      */
     public function testShowDetailsAttendance()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Attendance = Attendance::factory()->create();
         $response = $this->get(route('attendances.show', ['attendanceId' => $Attendance->id]));
@@ -71,6 +75,7 @@ class AttendanceTest extends TestCase
      */
     public function testUpdateAttendance()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Attendance = Attendance::factory()->create();
         $date = Carbon::now();
@@ -102,6 +107,7 @@ class AttendanceTest extends TestCase
      */
     public function testDeleteAttendance()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Attendance = Attendance::factory()->create();
         $response = $this->delete(route('attendances.destroy', ['attendanceId' => $Attendance->id]));

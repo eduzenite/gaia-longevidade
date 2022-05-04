@@ -7,6 +7,7 @@ use App\Models\AttendanceFile;
 use App\Models\File;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AttendanceFileTest extends TestCase
@@ -16,6 +17,7 @@ class AttendanceFileTest extends TestCase
      */
     public function testListAttendanceFile()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Attendance = Attendance::factory()->create();
         $response = $this->get(route('attendancefiles.index', ['attendanceId' => $Attendance->id]));
@@ -29,6 +31,7 @@ class AttendanceFileTest extends TestCase
      */
     public function testCreateAttendanceFile()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $data = [
             'user_id' => User::factory()->create()->id,
@@ -48,6 +51,7 @@ class AttendanceFileTest extends TestCase
      */
     public function testShowDetailsAttendanceFile()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AttendanceFile = AttendanceFile::factory()->create();
         $response = $this->get(route('attendancefiles.show', ['attendanceId' => $AttendanceFile->attendance_id, 'attendanceFileId' => $AttendanceFile->id]));
@@ -61,6 +65,7 @@ class AttendanceFileTest extends TestCase
      */
     public function testDeleteAttendanceFile()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AttendanceFile = AttendanceFile::factory()->create();
         $response = $this->delete(route('attendancefiles.destroy', ['attendanceId' => $AttendanceFile->attendance_id, 'attendanceFileId' => $AttendanceFile->id]));

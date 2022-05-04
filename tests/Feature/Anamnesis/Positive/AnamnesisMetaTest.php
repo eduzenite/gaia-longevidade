@@ -4,10 +4,12 @@ namespace Tests\Feature\Anamnesis\Positive;
 
 use App\Models\Anamnesis;
 use App\Models\AnamnesisMeta;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AnamnesisMetaTest extends TestCase
@@ -17,6 +19,7 @@ class AnamnesisMetaTest extends TestCase
      */
     public function testListAnamnesisMeta()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Anamnesis = Anamnesis::factory()->create();
         $response = $this->get(route('anamnesismetas.index', ['anamnesisId' => $Anamnesis->id]));
@@ -30,6 +33,7 @@ class AnamnesisMetaTest extends TestCase
      */
     public function testCreateAnamnesisMeta()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Anamnesis = Anamnesis::factory()->create();
         $faker = Faker::create();
@@ -49,6 +53,7 @@ class AnamnesisMetaTest extends TestCase
      */
     public function testShowDetailsAnamnesisMeta()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AnamnesisMeta = AnamnesisMeta::factory()->create();
         $response = $this->get(route('anamnesismetas.show', ['anamnesisId' => $AnamnesisMeta->anamnesis_id, 'anamnesisMetaId' => $AnamnesisMeta->id]));
@@ -62,6 +67,7 @@ class AnamnesisMetaTest extends TestCase
      */
     public function testUpdateAnamnesisMeta()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AnamnesisMeta = AnamnesisMeta::factory()->create();
         $faker = Faker::create();
@@ -81,6 +87,7 @@ class AnamnesisMetaTest extends TestCase
      */
     public function testDeleteAnamnesisMeta()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AnamnesisMeta = AnamnesisMeta::factory()->create();
         $response = $this->delete(route('anamnesismetas.destroy', ['anamnesisId' => $AnamnesisMeta->anamnesis_id, 'anamnesisMetaId' => $AnamnesisMeta->id]));

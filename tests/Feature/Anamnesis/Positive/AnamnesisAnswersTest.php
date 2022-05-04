@@ -5,8 +5,10 @@ namespace Tests\Feature\Anamnesis\Positive;
 use App\Models\Anamnesis;
 use App\Models\AnamnesisAnswers;
 use App\Models\AnamnesisQuestions;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AnamnesisAnswersTest extends TestCase
@@ -16,6 +18,7 @@ class AnamnesisAnswersTest extends TestCase
      */
     public function testListAnamnesisAnswers()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AnamnesisAnswers = AnamnesisAnswers::factory()->create();
         $response = $this->get(route('anamnesisanswers.index', ['anamnesisQuestionId' => $AnamnesisAnswers->anamnesis_question_id]));
@@ -29,6 +32,7 @@ class AnamnesisAnswersTest extends TestCase
      */
     public function testCreateAnamnesisAnswers()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $faker = Faker::create();
         $AnamnesisQuestions = AnamnesisQuestions::factory()->create();
@@ -47,6 +51,7 @@ class AnamnesisAnswersTest extends TestCase
      */
     public function testShowDetailsAnamnesisAnswers()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AnamnesisAnswers = AnamnesisAnswers::factory()->create();
         $response = $this->get(route('anamnesisanswers.show', ['anamnesisQuestionId' => $AnamnesisAnswers->anamnesis_question_id, 'anamnesisQuestionAnswerId' => $AnamnesisAnswers->id]));
@@ -60,6 +65,7 @@ class AnamnesisAnswersTest extends TestCase
      */
     public function testUpdateAnamnesisAnswers()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AnamnesisAnswers = AnamnesisAnswers::factory()->create();
         $faker = Faker::create();
@@ -78,6 +84,7 @@ class AnamnesisAnswersTest extends TestCase
      */
     public function testDeleteAnamnesisAnswers()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $AnamnesisAnswers = AnamnesisAnswers::factory()->create();
         $response = $this->delete(route('anamnesisanswers.destroy', ['anamnesisQuestionId' => $AnamnesisAnswers->anamnesis_question_id, 'anamnesisQuestionAnswerId' => $AnamnesisAnswers->id]));

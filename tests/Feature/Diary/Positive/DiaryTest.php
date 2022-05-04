@@ -6,6 +6,7 @@ use App\Models\Diary;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class DiaryTest extends TestCase
@@ -15,6 +16,7 @@ class DiaryTest extends TestCase
      */
     public function testListDiary()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $response = $this->get(route('diaries.index'));
         $response->assertStatus(200);
@@ -27,6 +29,7 @@ class DiaryTest extends TestCase
      */
     public function testCreateDiary()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $faker = Faker::create();
         $data = [
@@ -46,6 +49,7 @@ class DiaryTest extends TestCase
      */
     public function testShowDetailsDiary()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Diary = Diary::factory()->create();
         $response = $this->get(route('diaries.show', ['diaryId' => $Diary->id]));
@@ -59,6 +63,7 @@ class DiaryTest extends TestCase
      */
     public function testUpdateDiary()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Diary = Diary::factory()->create();
         $faker = Faker::create();
@@ -79,6 +84,7 @@ class DiaryTest extends TestCase
      */
     public function testDeleteDiary()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Diary = Diary::factory()->create();
         $response = $this->delete(route('diaries.destroy', ['diaryId' => $Diary->id]));

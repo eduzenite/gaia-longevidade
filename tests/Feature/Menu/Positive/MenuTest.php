@@ -6,6 +6,7 @@ use App\Models\Menu;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class MenuTest extends TestCase
@@ -15,6 +16,7 @@ class MenuTest extends TestCase
      */
     public function testListMenu()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $response = $this->get(route('menus.index'));
         $response->assertStatus(200);
@@ -27,6 +29,7 @@ class MenuTest extends TestCase
      */
     public function testCreateMenu()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $faker = Faker::create();
         $data = [
@@ -46,6 +49,7 @@ class MenuTest extends TestCase
      */
     public function testShowDetailsMenu()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Menu = Menu::factory()->create();
         $response = $this->get(route('menus.show', ['menuId' => $Menu->id]));
@@ -59,6 +63,7 @@ class MenuTest extends TestCase
      */
     public function testUpdateMenu()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Menu = Menu::factory()->create();
         $faker = Faker::create();
@@ -79,6 +84,7 @@ class MenuTest extends TestCase
      */
     public function testDeleteMenu()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Menu = Menu::factory()->create();
         $response = $this->delete(route('menus.destroy', ['menuId' => $Menu->id]));

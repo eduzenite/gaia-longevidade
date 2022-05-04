@@ -4,8 +4,10 @@ namespace Tests\Feature\Prescription\Positive;
 
 use App\Models\Medicine;
 use App\Models\Prescription;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class MedicineTest extends TestCase
@@ -15,6 +17,7 @@ class MedicineTest extends TestCase
      */
     public function testListMedicine()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Prescription = Prescription::factory()->create();
         $response = $this->get(route('medicines.index', ['prescriptionId' => $Prescription->id]));
@@ -28,6 +31,7 @@ class MedicineTest extends TestCase
      */
     public function testCreateMedicine()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $faker = Faker::create();
         $data = [
@@ -48,6 +52,7 @@ class MedicineTest extends TestCase
      */
     public function testShowDetailsMedicine()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Medicine = Medicine::factory()->create();
         $response = $this->get(route('medicines.show', ['prescriptionId' => $Medicine->prescription_id, 'prescriptionMedicineId' => $Medicine->id]));
@@ -61,6 +66,7 @@ class MedicineTest extends TestCase
      */
     public function testUpdateMedicine()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Medicine = Medicine::factory()->create();
         $faker = Faker::create();
@@ -81,6 +87,7 @@ class MedicineTest extends TestCase
      */
     public function testDeleteMedicine()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Medicine = Medicine::factory()->create();
         $response = $this->delete(route('medicines.destroy', ['prescriptionId' => $Medicine->prescription_id, 'prescriptionMedicineId' => $Medicine->id]));

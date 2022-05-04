@@ -6,6 +6,7 @@ use App\Models\Prescription;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class PrescriptionTest extends TestCase
@@ -15,6 +16,7 @@ class PrescriptionTest extends TestCase
      */
     public function testListPrescription()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $response = $this->get(route('prescriptions.index'));
         $response->assertStatus(200);
@@ -27,6 +29,7 @@ class PrescriptionTest extends TestCase
      */
     public function testCreatePrescription()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $faker = Faker::create();
         $data = [
@@ -45,6 +48,7 @@ class PrescriptionTest extends TestCase
      */
     public function testShowDetailsPrescription()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Prescription = Prescription::factory()->create();
         $response = $this->get(route('prescriptions.show', ['prescriptionId' => $Prescription->id]));
@@ -58,6 +62,7 @@ class PrescriptionTest extends TestCase
      */
     public function testUpdatePrescription()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Prescription = Prescription::factory()->create();
         $faker = Faker::create();
@@ -75,6 +80,7 @@ class PrescriptionTest extends TestCase
      */
     public function testDeletePrescription()
     {
+        Sanctum::actingAs(User::factory()->create());
         $this->withoutExceptionHandling();
         $Prescription = Prescription::factory()->create();
         $response = $this->delete(route('prescriptions.destroy', ['prescriptionId' => $Prescription->id]));
